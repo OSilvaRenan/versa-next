@@ -1,6 +1,10 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import NavBar from './NavBar'
+import SideMenu from './SideMenu'
+import { Toaster } from "@/components/ui/toaster"
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,8 +19,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className={inter.className}>
+      <body className='max-h-screen bg-gray-400 overflow-hidden'>
+        <NavBar />
+        <main className='max-h-screen flex items-start justify-left bg-gray-400 overflow-hidden'>
+          <SideMenu />
+          <div className="container h-dvh min-h-dvh max-h-dvh overflow-auto pb-4">
+            {children}
+            <Toaster />
+          </div>
+        </main>
+      </body>
     </html>
   )
 }
