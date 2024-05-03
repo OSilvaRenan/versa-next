@@ -6,60 +6,52 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils";
 import { Check, ChevronDown } from "lucide-react";
 import { useState } from "react";
-
-export interface CboData {
-    Value: string;
-    Description: string;
-}
+import { CboData } from "./CboEstatica";
 
 interface Props {
     classNameCombo?: string;
     classNameLista?: string;
     label?: string;
     data: CboData[];
+    carregarOpcoes: (value: any) => void;
+    onSelect: (value: string) => void
     itemListaSelecionado: CboData;
     mostrarValue: boolean;
-    onSelect?: (value: string) => void;
-    carregarOpcoes: () => void;
-    setData: (value: CboData[]) => void;
-
 }
 
-export const CboEstatica = ({ classNameCombo, classNameLista, label, mostrarValue, data, itemListaSelecionado, setData, carregarOpcoes, onSelect }: Props) => {
+export const CboDinamica = ({ classNameCombo, classNameLista, label, mostrarValue, data, itemListaSelecionado,
+    onSelect,
+    carregarOpcoes }: Props) => {
 
     const [open, setOpen] = useState(false);
     const [itemLista, setItemLista] = useState<CboData>(itemListaSelecionado);
-
-    const handleSearch = async (event: any) => {
-        const dados = data.find((lista) => { lista.Description.includes(event.target.value) });
-
-        if (dados != null) {
-            setData([dados]);
-        }
-    };
 
     return (
         <div className="flex">
             <div className="grid gap-2 self-end">
                 <Label htmlFor="controlepopover"> {label}</Label>
-                <Popover open={open} onOpenChange={setOpen} >
+
+                <Popover open={open} onOpenChange={setOpen}  >
                     <PopoverTrigger asChild id="controlepopover" className={classNameCombo ?? "w-[360px] h-8"}>
                         <Button
                             variant="outline"
                             role="combobox"
+                            // aria-expanded={open}
                             className="justify-between px-1 py-4"
-                            onClick={carregarOpcoes}
+                        // onClick={carregarOpcoes}
                         >
                             {itemLista.Value
                                 ? itemLista.Description != '' ? itemLista.Description : data.find((lista) => itemLista.Value === lista.Value.toString())?.Description ?? "Selecione o registro..."
                                 : "Selecione o registro..."}
-                            <ChevronDown className="h-4 w-4 shrink-0 opacity-50 z-0" />
+
+                            <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                     </PopoverTrigger>
-                    <PopoverContent className={classNameLista ?? "w-[360px] p-0"}>
-                        <Command>
+                    <PopoverContent
+                        className={classNameLista ?? "w-[360px] p-0"}>
+                        <Command >
                             <CommandInput placeholder="Buscar registro..."
-                                onKeyDown={handleSearch}
+                                onKeyDown={carregarOpcoes}
                             />
                             <CommandEmpty>Nenhum registro encontrado.</CommandEmpty>
                             <CommandGroup>
@@ -69,16 +61,17 @@ export const CboEstatica = ({ classNameCombo, classNameLista, label, mostrarValu
                                         value={lista.Description}
                                         onSelect={() => {
                                             setItemLista(itemLista.Value == lista.Value ?
-                                                { Value: "-1", Description: "" } :
+                                                { Value: "", Description: "" } :
                                                 { Value: lista.Value.toString(), Description: lista.Description });
                                             onSelect ? onSelect(lista.Value.toString()) : null
                                             setOpen(false);
+
                                         }}
                                     >
                                         <Check
                                             className={cn(
                                                 "mr-2 h-4 w-4",
-                                                itemLista.Value != '-1' && itemLista.Value == lista.Value ? "opacity-100" : "opacity-0"
+                                                itemLista.Value === lista.Value ? "opacity-100" : "opacity-0"
                                             )}
                                         />
                                         {lista.Description}
@@ -88,15 +81,19 @@ export const CboEstatica = ({ classNameCombo, classNameLista, label, mostrarValu
                         </Command>
                     </PopoverContent>
                 </Popover>
+
+
             </div>
             {mostrarValue ?
                 <>
                     <div className="grid gap-2 self-end px-2">
                         <Input type="text" id="value"
-                            value={itemLista.Value == '-1' ? '' : itemLista.Value}
+                            value={itemLista.Value}
                             className="w-[50px] h-8 py-4"
-                            readOnly />
+                        //   onChange={(e) => setLocalizacao(e.target.value)} onKeyDown={ConferePeloEnter} 
+                        />
                     </div>
+
                 </>
                 : null}
         </div >

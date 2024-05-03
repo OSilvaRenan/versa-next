@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import axios from 'axios';
 import { Check, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
-import { AutorDTO } from '../../autor/columns';
+import { AutorDTO } from '../../paginas/autor/columns';
 
 interface AutorRequest {
     Nomautor: string;

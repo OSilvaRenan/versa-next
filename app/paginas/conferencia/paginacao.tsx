@@ -43,7 +43,7 @@ const Paginacao = ({ page }: Props) => {
         setPg(index.toString());
 
         const query = params.size ? params.toString() : '';
-        router.push('/conferencia?' + query);
+        router.push('/paginas/conferencia?' + query);
     }
 
     return (
@@ -58,10 +58,9 @@ const Paginacao = ({ page }: Props) => {
                         <PaginationItem>
                             <PaginationPrevious onClick={() => { EnviaDadosPaginacao(parseInt(pg) - 1) }} />
                         </PaginationItem>
-                        <PaginationItem >
-                            <PaginationLink className='px-8'> {page.PageIndex} / {nroPages}</PaginationLink>
-                        </PaginationItem>
-
+                        <span className='text-sm'>
+                            {page.PageIndex} / {nroPages}
+                        </span>
                         <PaginationItem>
                             <PaginationNext onClick={() => { EnviaDadosPaginacao(parseInt(pg) + 1) }} />
                         </PaginationItem>

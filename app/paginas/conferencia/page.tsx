@@ -1,11 +1,11 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { fetchWrapper } from "../api/fetch";
-import { PaginedList } from "../autor/columns";
 import Filters from "./filters";
-import Paginacao from "./paginacao";
 import { ConferenciaRequestDTO, ConferenciaResponseDTO } from "./ConferenciaDTO";
 import Link from "next/link";
-import { formatarData } from "../functions/functions";
+import { fetchWrapper } from "@/app/api/fetch";
+import { PaginedList } from "../autor/columns";
+import { formatarData } from "@/app/functions/functions";
+import Paginacao from "./paginacao";
 
 export interface searchQuery {
   datInicio: Date;
@@ -60,7 +60,7 @@ export default async function ConferenciaPage({ searchParams }: Props) {
 
   return (
 
-    <div className="mx-auto py-3 bg-gray-400 ">
+    <div className="mx-auto py-3 ">
       <div className="mx-auto">
         <p className="text-xl font-bold"> Consulta Conferência </p>
       </div>
@@ -70,7 +70,7 @@ export default async function ConferenciaPage({ searchParams }: Props) {
           <Table className="container mx-auto max-h-20">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[100px]">Código</TableHead>
+                <TableHead className="w-[10px] max-w-[10px] min-w-[10px]">Código</TableHead>
                 <TableHead>Data </TableHead>
                 <TableHead>Situação</TableHead>
                 <TableHead>Operação</TableHead>
@@ -80,11 +80,11 @@ export default async function ConferenciaPage({ searchParams }: Props) {
             <TableBody>
               {dados.map((conferencia) => (
                 <TableRow key={conferencia.Codconferencia}>
-                  <TableCell className="font-medium"><Link href={"conferencia/" + conferencia.Codconferencia}>{conferencia.Codconferencia} </Link></TableCell>
-                  <TableCell className="font-medium">{formatarData(conferencia.Datconferencia)}</TableCell>
-                  <TableCell className="font-medium">{conferencia.Situacaoconferencia}</TableCell>
-                  <TableCell className="font-medium">{conferencia.Nomoperacao}</TableCell>
-                  <TableCell className="font-medium">{conferencia.Nomcliente}</TableCell>
+                  <TableCell className="font-medium w-[10px] max-w-[10px] min-w-[10px]"><Link href={"conferencia/" + conferencia.Codconferencia}>{conferencia.Codconferencia} </Link></TableCell>
+                  <TableCell className="font-medium w-[20px] max-w-[20px] min-w-[20px]">{formatarData(conferencia.Datconferencia)}</TableCell>
+                  <TableCell className="font-medium w-[20px] max-w-[20px] min-w-[20px]">{conferencia.Situacaoconferencia}</TableCell>
+                  <TableCell className="font-medium w-[20px] max-w-[20px] min-w-[20px]">{conferencia.Nomoperacao}</TableCell>
+                  <TableCell className="font-medium  w-[30px] max-w-[30px] min-w-[30px]">{conferencia.Nomcliente}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

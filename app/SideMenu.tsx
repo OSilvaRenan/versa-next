@@ -4,17 +4,16 @@ import React from 'react'
 
 export default function SideMenu() {
     return (
-
-        <nav className='w-1/6 flex flex-col justify-between items-start border-b-1 pl-5 bg-slate-300 sticky' >
+        <nav className='w-1/6 flex flex-col justify-between items-start border-b-1 bg-slate-500 py-2 fixed top-14 left-0 h-full' >
             <div className="flex flex-col justify-between items-center self-stretch mr-1 h-screen">
                 <Accordion type="single" collapsible className='size-full self-center'>
-                    <AccordionItem value="item-1">
-                        <AccordionTrigger>Cadastro</AccordionTrigger>
-                        <AccordionContent className="flex flex-col justify-between items-start self-stretch">
-                           <Link href='/autor' className='text-zinc-500 hover:text-zinc-800 transition-colors'> Autor </Link>
-                           <Link href='/conferencia' className='text-zinc-500 hover:text-zinc-800 transition-colors'> Conferência </Link>
-                           <Link href='/editora' className='text-zinc-500 hover:text-zinc-800 transition-colors'> Editora </Link>
-                           <Link href='/pagamento' className='text-zinc-500 hover:text-zinc-800 transition-colors'> Pagamento </Link>
+                    <AccordionItem value="item-1" className='px-5'>
+                        <AccordionTrigger className='text-zinc-300 hover:text-zinc-700 transition-colors py-2'>Cadastro</AccordionTrigger>
+                        <AccordionContent className="flex flex-col justify-between items-start self-stretch gap-1">
+                           <Link href='/paginas/autor' className='text-zinc-300 hover:text-zinc-800 transition-colors'> Autor </Link>
+                           <Link href='/paginas/conferencia' className='text-zinc-300 hover:text-zinc-800 transition-colors'> Conferência </Link>
+                           <Link href='/paginas/editora' className='text-zinc-300 hover:text-zinc-800 transition-colors'> Editora </Link>
+                           <Link href='/paginas/pagamento' className='text-zinc-300 hover:text-zinc-800 transition-colors'> Pagamento </Link>
                         </AccordionContent>
                     </AccordionItem>
                 </Accordion>

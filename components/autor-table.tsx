@@ -1,7 +1,7 @@
 "use client"
-import { DataTable } from "@/app/editora/data-table/data-table";
+// import { DataTable } from "@/app/editora/data-table/data-table";
 import Search from "@/components/search";
-import { AutorDTO, columns } from "@/app/autor/columns";
+import { AutorDTO, columns } from "@/app/paginas/autor/columns";
 import { useEffect, useState } from "react";
 import { fetchWrapper } from "@/app/api/fetch";
 import FilterAutor from "@/app/Combobox/Filters/FilterAutor";
@@ -21,7 +21,7 @@ export default function AutorTable({ data }: Props) {
       <h2> Autores </h2>
       <br></br>
       <Search />
-      <DataTable columns={columns} data={data} />
+      {/* <DataTable columns={columns} data={data} /> */}
       
     </div>
   )

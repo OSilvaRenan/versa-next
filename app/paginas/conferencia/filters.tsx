@@ -1,13 +1,14 @@
 "use client"
+import FilterCliente from '@/app/Combobox/Filters/FilterCliente';
+import FilterOperacao from '@/app/Combobox/Filters/FilterOperacao';
+import FilterSituacao from '@/app/Combobox/Filters/FilterSituacao';
+import FilterTipoPeriodo from '@/app/Combobox/Filters/FilterTipoPeriodo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from 'react';
-import FilterCliente from '../Combobox/Filters/FilterCliente';
-import FilterOperacao from '../Combobox/Filters/FilterOperacao';
-import FilterSituacao from '../Combobox/Filters/FilterSituacao';
-import FilterTipoPeriodo from '../Combobox/Filters/FilterTipoPeriodo';
+
 
 const Filters = () => {
 
@@ -38,7 +39,7 @@ const Filters = () => {
 
         const query = params.size ? params.toString() : '';
 
-        router.push('/conferencia?' + query);
+        router.push('/paginas/conferencia?' + query);
     }
 
     return (
@@ -64,25 +65,19 @@ const Filters = () => {
                             onChange={(e) => setDatFim(e.target.value)} />
                     </div>
                     <div className='flex flex-col self-end'>
-                        <FilterSituacao className='h-8' value={codsituacao} onSelect={setCodsituacao} />
+                        <FilterSituacao classNameCombo="w-[175px] h-8" classNameLista="w-[250px] p-0" value={codsituacao =="" ? -1 : parseInt(codsituacao)} onSelect={setCodsituacao} />
                     </div>
                     <div className='flex flex-col align-bottom items-end'>
                         <Button className="h-8 mt-8" onClick={Pesquisa} type="button">Pesquisar</Button>
                     </div>
-
                 </div>
                 <div className="flex flex-1 items-center space-x-2 py-1">
                     <div className='flex flex-col'>
-                        <Label className="py-2" >Operação:</Label>
-                        <FilterOperacao width="360px" className='h-8' value={codoperacao} onSelect={setCodoperacao} />
+                        <FilterOperacao classNameCombo="w-[360px] h-8" classNameLista="w-[360px] p-0" value={codoperacao} onSelect={setCodoperacao} />
                     </div>
                     <div className='flex flex-col'>
-                        <Label className="py-2">Cliente:</Label>
-                        <FilterCliente width="360px" className='h-8' value={codcliente} onSelect={setCodcliente} />
+                        <FilterCliente classNameCombo="w-[330px]  h-8" classNameLista="w-[330px] p-0" value={codcliente} onSelect={setCodcliente} />
                     </div>
-                </div>
-                <div className="flex flex-1 items-center space-x-2 py-1">
-
                 </div>
             </form>
         </div>

@@ -10,8 +10,8 @@ import {
   TableRow
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
-import { apenasNumeros } from "../functions/functions";
-import ListaEditorasGrupo from "../Combobox/FilterEditoraGrupo";
+import { apenasNumeros } from "../../functions/functions";
+import ListaEditorasGrupo from "../../Combobox/FilterEditoraGrupo";
 import PaginacaoEditora from "./paginacaoEditora";
 import { EditoraDTO } from "./EditoraDTO";
 import { DialogCadastroEditora } from "./DialogCadastroEditora";
@@ -82,28 +82,33 @@ export default function EditoraTable({ data }: Props) {
             </div>
           </div>
           <div className='flex flex-col'>
-            <ListaEditorasGrupo value={''} description={""} />
+            <ListaEditorasGrupo classNameCombo="w-[200px] h-8" classNameLista="w-[200px] p-0"
+              itemSelecionado={{
+                Value: '',
+                Description: ''
+              }}
+            />
           </div>
         </div>
         <DialogCadastroEditora />
       </div>
       <div className="mx-auto ">
         {editoras.length == 0 ? <div className="py-4"> <span >Nenhuma editora encontrada</span> </div> :
-          <Table className="container mx-auto max-h-10">
+          <Table className="container mx-auto max-h-8 p-2">
             <TableHeader>
-              <TableRow>
+              <TableRow >
                 <TableHead className="font-medium min-w-2 w-2 max-win-2 border-spacing-1">Código</TableHead>
                 <TableHead className="font-medium min-w-10 w-10 max-win-10">Editora</TableHead>
                 <TableHead className="font-medium min-w-10 w-10 max-win-10">Editora Grupo</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody className="h-5">
+            <TableBody className="py-0">
               {editoras.map((editora) => (
-                <TableRow key={editora.Codeditora}>
-                  <TableCell className="font-medium w-[30px] max-w-[30px] min-w-[30px] ">{editora.Codeditora}</TableCell>
-                  <TableCell width="70px" className="font-medium w-[200px] max-w-[200px] min-w-[200px]">{editora.Nomeditora.trim()}</TableCell>
-                  <TableCell width="70px" className="font-medium w-[200px] max-w-[200px] min-w-[200px]">{editora.Nomeditoragrupo}</TableCell>
-                  <TableCell width="70px" className="font-medium min-w-10 w-10 max-win-10">
+                <TableRow key={editora.Codeditora} className="py-0" >
+                  <TableCell className="font-medium w-[30px] max-w-[30px] min-w-[30px]">{editora.Codeditora}</TableCell>
+                  <TableCell className="font-medium w-[200px] max-w-[200px] min-w-[200px]">{editora.Nomeditora.trim()}</TableCell>
+                  <TableCell className="font-medium w-[200px] max-w-[200px] min-w-[200px] ">{editora.Nomeditoragrupo}</TableCell>
+                  <TableCell className="font-medium min-w-10 w-10 max-win-10">
                     <DialogCadastroEditora codeditora={editora.Codeditora}
                     />
                   </TableCell>

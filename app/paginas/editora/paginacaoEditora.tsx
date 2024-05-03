@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { Pagination, PaginationContent, PaginationItem, PaginationLast, PaginationLink, PaginationNext, PaginationPrevious, PaginationStart } from '@/components/ui/pagination';
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLast, PaginationLink, PaginationNext, PaginationPrevious, PaginationStart } from '@/components/ui/pagination';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
 interface PaginacaoProps {
   currentPage: number;
@@ -8,7 +9,7 @@ interface PaginacaoProps {
   onPageChange: (page: number) => void;
 }
 
-const PaginacaoEditora: React.FC<PaginacaoProps> = ({currentPage, totalPages, onPageChange }) => {
+const PaginacaoEditora: React.FC<PaginacaoProps> = ({ currentPage, totalPages, onPageChange }) => {
   const searchParams = useSearchParams()!;
   const router = useRouter();
   const params = new URLSearchParams(searchParams);
@@ -16,20 +17,20 @@ const PaginacaoEditora: React.FC<PaginacaoProps> = ({currentPage, totalPages, on
   useEffect(() => {
     params.set('pg', '1');
     const query = params.size ? params.toString() : '';
-    router.push('/editora?' + query);
+    router.push('/paginas/editora?' + query);
   }, [totalPages]);
 
   function EnviaDadosPaginacao(index: number) {
     index = Math.max(0, Math.min(index, totalPages - 1)); // Garante que o índice esteja dentro dos limites
 
-    if (index > 0) {
-      params.set('pg', index.toString());
+    if (index >= 0) {
+      params.set('pg', (index + 1).toString());
     }
 
     onPageChange(index);
 
     const query = params.size ? params.toString() : '';
-    router.push('/editora?' + query);
+    router.push('/paginas/editora?' + query, { scroll: false });
   }
 
   return (
@@ -47,9 +48,9 @@ const PaginacaoEditora: React.FC<PaginacaoProps> = ({currentPage, totalPages, on
             </>
           )}
           <PaginationItem>
-            <PaginationLink className='px-8'>
+            <span className='text-sm'>
               {currentPage + 1} / {totalPages <= 1 ? 1 : totalPages}
-            </PaginationLink>
+            </span>
           </PaginationItem>
           {totalPages > 1 && (
             <>

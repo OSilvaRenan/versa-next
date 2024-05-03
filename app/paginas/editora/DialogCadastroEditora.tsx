@@ -49,7 +49,7 @@ export function DialogCadastroEditora({ codeditora }: Props) {
     return (
         <Dialog open={open} onOpenChange={OpenDialog} modal={true}>
             <DialogTrigger asChild>
-                <Button className="h-8" variant="outline"> {codeditora || codeditora == 0 ? "Editar " : "Nova Editora"}</Button>
+                <Button className="h-8 p-4" variant="outline"> {codeditora || codeditora == 0 ? "Editar " : "Nova Editora"}</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]" onPointerDownOutside={event => event.preventDefault()}>
                 <DialogHeader>

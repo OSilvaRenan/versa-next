@@ -19,11 +19,14 @@ interface SituacaoResponse {
 }
 
 interface Props {
-    className: string;
-    value: string;
+    classNameCombo?: string;
+    classNameLista?: string;
+    value: number;
+    onSelect: (value: string) => void;
+
 }
 
-const FilterSituacao = ({ value, className }: Props) => {
+const FilterSituacao = ({ value, classNameCombo, classNameLista, onSelect }: Props) => {
 
     const [data, setData] = useState<CboData[]>([]);
 
@@ -44,15 +47,14 @@ const FilterSituacao = ({ value, className }: Props) => {
         } finally {
         }
     };
-   
 
     return (
-        <div className="flex items-end mt-1">
-            <CboEstatica className={className} label={"Situação:"}
-                itemListaSelecionado={{ Value: value, Description: '' }}
+        <div className="flex items-end">
+            <CboEstatica classNameCombo={classNameCombo} classNameLista={classNameLista} label={"Situação:"}
+                itemListaSelecionado={{ Value: value.toString(), Description: '' }} onSelect={onSelect}
                 carregarOpcoes={carregarOpcoes}
                 data={data} setData={setData}
-                mostraDadosLista={false} />
+                mostrarValue={false} />
         </div>
     );
 };

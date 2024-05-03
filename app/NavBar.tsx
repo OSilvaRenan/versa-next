@@ -1,20 +1,35 @@
+"use client"
+import DadosUsuario from '@/components/DadosUsuario'
+import { Button } from '@/components/ui/button'
+import { getServerSession } from 'next-auth'
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import React from 'react'
 
-const NavBar = () => {
+export default function NavBar() {
+    const { data, status } = useSession();
     return (
-        <nav className='flex space-x-6 border-b px-5 h-14 items-center justify-between bg-slate-100 sticky top-0'>
+        <nav className='flex space-x-6 border-b px-5 h-14 items-center justify-between bg-slate-100 fixed top-0 left-0 w-full'>
             <div className='flex space-x-6 '>
-                <Link href="/"> Logo</Link>
+                <Link href="/paginas/home" className='text-zinc-900 hover:text-zinc-400 transition-colors'>Logo</Link>
                 <ul className='flex space-x-6'>
-                    <li><Link href="/" className='text-zinc-500 hover:text-zinc-800 transition-colors'>Inicio</Link></li>
+                    <li><Link href="/paginas/home" className='text-zinc-900 hover:text-zinc-400 transition-colors'>Inicio</Link></li>
                 </ul>
             </div>
-            <div>
-                <Link href="/login">Login</Link>
-            </div>
+
+
+
+            {status === 'authenticated' ?
+          <DadosUsuario nomeUsuario={data!.user?.Nome ?? ""} /> 
+
+            : 
+                <div>
+                    <Link href="/" className='text-zinc-900 hover:text-zinc-400 transition-colors'>Login</Link>
+                </div>
+
+            }
         </nav>
+
     )
 }
 
-export default NavBar

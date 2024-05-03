@@ -1,5 +1,5 @@
 import AutorTable from "@/components/autor-table";
-import { fetchWrapper } from "../api/fetch";
+import { fetchWrapper } from "../../api/fetch";
 import { AutorDTO, PaginedList } from "./columns";
 
 export interface searchQuery {

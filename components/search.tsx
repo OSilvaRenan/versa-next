@@ -18,7 +18,7 @@ const Search = () => {
         if (search) params.append('search', search);
 
         const query = params.size ? params.toString() : '';
-        router.push('/autor?' + query);
+        router.push('/paginas/autor?' + query);
     }
 
     return (

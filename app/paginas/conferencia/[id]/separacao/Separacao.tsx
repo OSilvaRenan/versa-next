@@ -14,7 +14,7 @@ export const Separacao = ({ params, data }: PropsSeparacao) => {
     const navigation = useRouter();
 
       return (
-        <div className="mx-auto py-4 bg-gray-400 ">
+        <div className="mx-auto">
             <div className='flex flex-row justify-between  py-2 self-center space-x-2'>
                 <span className=' py-2 px-2'> Pedido Nº {params.id}</span>
                 <Button variant="secondary"

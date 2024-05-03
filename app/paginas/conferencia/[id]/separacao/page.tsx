@@ -22,11 +22,10 @@ export interface separacaoResponse {
 
 export default function Page({ params }: Props) {
     const navigation = useRouter();
-
     return (
-        <div className="mx-auto py-4 bg-gray-400 ">
-            <div className='flex flex-row justify-between  py-2 self-center space-x-2'>
-                <span className=' py-2 px-2'> Pedido Nº {params.id}</span>
+        <div className="mx-auto">
+            <div className="flex flex-row justify-between  py-2 self-center space-x-2">
+                <span className="py-2 px-2"> Pedido Nº {params.id}</span>
                 <Button variant="secondary"
                     onClick={() => navigation.back()}
                     type="button">Voltar</Button>
@@ -34,8 +33,6 @@ export default function Page({ params }: Props) {
             <FiltersItensPedido params={params} />
             <LstItensPedido params={params} />
         </div>
-
-
     );
 };
 
