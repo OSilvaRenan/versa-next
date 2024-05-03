@@ -1,15 +1,35 @@
-import { Card, CardContent, CardTitle } from '@/components/ui/card'
-import { TableHeader, TableRow, TableHead, TableBody, Table, TableCell } from '@/components/ui/table'
-import React from 'react'
-import Paginacao from '../paginacao'
+"use client"
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardTitle } from '@/components/ui/card'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
 import { conferenciaResponse } from '../ConferenciaDTO'
+import Paginacao from '../paginacao'
 
 interface Props {
-    itensConferencia: conferenciaResponse[]
+    params: { id: string };
 }
 
-export const LstItensPedido = ({ itensConferencia }: Props) => {
+export const LstItensPedido = ({ params }: Props) => {
+
+    const [itens, setItens] = useState<conferenciaResponse[]>([]);
+    const [atualizaLista, setAtualizaLista] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+
+    const buscaItensConferencia = async () => {
+        setLoading(true);
+        await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/conferencia/${params.id}/produtos`).then(response => {
+            setItens(response.data);
+            setLoading(false);
+        });
+    };
+
+    useEffect(() => {
+        buscaItensConferencia();
+    }, [params.id, atualizaLista]);
+
+
     return (
         <div className='py-5' >
             <Card>
@@ -19,12 +39,12 @@ export const LstItensPedido = ({ itensConferencia }: Props) => {
                 </CardTitle>
                 <CardContent className='container py-2'>
                     <div className="container mx-auto ">
-                        {itensConferencia.length == 0 ? <span>Nenhuma conferência encontrada</span> :
+                        {itens.length == 0 ? <span>Nenhuma conferência encontrada</span> :
                             <Table className="container mx-auto max-h-20">
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead className="w-[100px]">Código</TableHead>
-                                         <TableHead>Isbn </TableHead> 
+                                        <TableHead>Isbn </TableHead>
                                         <TableHead>Produto</TableHead>
                                         <TableHead>Qtd</TableHead>
                                         <TableHead>Qtd Conferida</TableHead>
@@ -32,7 +52,7 @@ export const LstItensPedido = ({ itensConferencia }: Props) => {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {itensConferencia.map((item) => (
+                                    {itens.map((item) => (
                                         <TableRow key={item.Codproduto}>
                                             <TableCell className="font-medium">{item.Codproduto}</TableCell>
                                             <TableCell className="font-medium">{item.Isbn}</TableCell>

@@ -6,6 +6,11 @@ import { fetchWrapper } from "@/app/api/fetch";
 import { PaginedList } from "../autor/columns";
 import { formatarData } from "@/app/functions/functions";
 import Paginacao from "./paginacao";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useState } from "react";
+import { Check, Pencil, ShoppingCart } from "lucide-react";
 
 export interface searchQuery {
   datInicio: Date;
@@ -59,39 +64,49 @@ export default async function ConferenciaPage({ searchParams }: Props) {
   var page = data.Page;
 
   return (
-
-    <div className="mx-auto py-3 ">
-      <div className="mx-auto">
-        <p className="text-xl font-bold"> Consulta Conferência </p>
-      </div>
+    <div className="mx-auto">
       <Filters />
-      <div className="mx-auto ">
-        {dados.length == 0 ? <span>Nenhuma conferência encontrada</span> :
-          <Table className="container mx-auto max-h-20">
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[10px] max-w-[10px] min-w-[10px]">Código</TableHead>
-                <TableHead>Data </TableHead>
-                <TableHead>Situação</TableHead>
-                <TableHead>Operação</TableHead>
-                <TableHead>Cliente</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {dados.map((conferencia) => (
-                <TableRow key={conferencia.Codconferencia}>
-                  <TableCell className="font-medium w-[10px] max-w-[10px] min-w-[10px]"><Link href={"conferencia/" + conferencia.Codconferencia}>{conferencia.Codconferencia} </Link></TableCell>
-                  <TableCell className="font-medium w-[20px] max-w-[20px] min-w-[20px]">{formatarData(conferencia.Datconferencia)}</TableCell>
-                  <TableCell className="font-medium w-[20px] max-w-[20px] min-w-[20px]">{conferencia.Situacaoconferencia}</TableCell>
-                  <TableCell className="font-medium w-[20px] max-w-[20px] min-w-[20px]">{conferencia.Nomoperacao}</TableCell>
-                  <TableCell className="font-medium  w-[30px] max-w-[30px] min-w-[30px]">{conferencia.Nomcliente}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        }
+
+      <div className='my-5' >
+        <Card className="min-h-[38rem]">
+          <CardContent className='py-2'>
+            <div className=" mx-auto py-2">
+              {dados.length == 0 ? <span>Nenhuma conferência encontrada</span> :
+                <Table className="container mx-auto max-h-20">
+                  <TableHeader>
+                    <TableRow className="font-medium w-[5px] max-w-[5px] min-w-[5px]">
+                      <TableHead>Código</TableHead>
+                      <TableHead>Data</TableHead>
+                      <TableHead>Situação</TableHead>
+                      <TableHead>Operação</TableHead>
+                      <TableHead>Cliente</TableHead>
+                      <TableHead>Ações</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {dados.map((conferencia) => (
+                      <TableRow key={conferencia.Codconferencia} className="h-2 p-0">
+                        <TableCell className="h-2 p-0" width="15px" >{conferencia.Codconferencia}</TableCell>
+                        <TableCell width="100px" >{formatarData(conferencia.Datconferencia)}</TableCell>
+                        <TableCell width="300px">{conferencia.Situacaoconferencia}</TableCell>
+                        <TableCell width="300px">{conferencia.Nomoperacao}</TableCell>
+                        <TableCell width="300px">{conferencia.Nomcliente}</TableCell>
+                        <TableCell className="space-x-2 flex items-center justify-start">
+                          <Button variant="ghost" className="p-2"><Link href="#"> <Pencil className="p-1" /></Link></Button>
+                          <Button variant="ghost" className="p-2"><Link href={"conferencia/" + conferencia.Codconferencia}><Check className="p-1" /></Link></Button>
+                          <Button variant="ghost" className="p-2"><Link href={"conferencia/" + conferencia.Codconferencia + "/separacao"}><ShoppingCart className="p-1" /></Link></Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              }
+            </div>
+            <Paginacao page={page} />
+          </CardContent>
+        </Card>
       </div>
-      <Paginacao page={page} />
     </div>
+
   )
 }

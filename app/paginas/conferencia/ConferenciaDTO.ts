@@ -61,3 +61,15 @@ export interface conferenciaResponse {
   Localizacao: string;
   Isbn: string;
 }
+
+export interface separacaoResponse {
+  Codconferencia: number;
+  Codempresa: number;
+  Codproduto: number;
+  Nomproduto: string;
+  Quantidade: number;
+  Qtdconferida: number;
+  Localizacao: string;
+  Isbn: string;
+  Qtdseparada: number;
+}

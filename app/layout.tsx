@@ -30,7 +30,6 @@ export default async function RootLayout({
           <NavBar />
           <RotaProtegida>
             {session ?
-
               <main className='flex '>
                 <SideMenu />
                 <div className="container ml-[16.7%] h-screen pb-4 pt-14 py-4">

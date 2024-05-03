@@ -16,17 +16,12 @@ export default function NavBar() {
                     <li><Link href="/paginas/home" className='text-zinc-900 hover:text-zinc-400 transition-colors'>Inicio</Link></li>
                 </ul>
             </div>
-
-
-
             {status === 'authenticated' ?
-          <DadosUsuario nomeUsuario={data!.user?.Nome ?? ""} /> 
-
-            : 
+                <DadosUsuario nomeUsuario={data!.user?.Nome ?? ""} />
+                :
                 <div>
                     <Link href="/" className='text-zinc-900 hover:text-zinc-400 transition-colors'>Login</Link>
                 </div>
-
             }
         </nav>
 

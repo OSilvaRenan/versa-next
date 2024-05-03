@@ -4,7 +4,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { DrawerAtualizaQtd } from './DrawerAtualizaQtd'
 import { Skeleton } from '@/components/ui/skeleton'
-import { separacaoResponse } from './page'
+import { separacaoResponse } from '../../ConferenciaDTO'
 
 interface Props {
     params: { id: string };
@@ -29,9 +29,9 @@ export const LstItensPedido = ({ params }: Props) => {
     }, [params.id, atualizaLista]);
 
     return (
-        <div className=' py-5' >
+        <div className='py-5' >
             <Card>
-                <CardTitle className=' container flex flex-row justify-between  py-2 self-center space-x-2 h-8'>
+                <CardTitle className='container flex flex-row justify-between  py-2 self-center space-x-2 h-8'>
                     <span className='h-8 py-1'>Itens deste pedido</span>
                     <DrawerAtualizaQtd itens={itens} setAtualizaLista={setAtualizaLista} atualizaLista={atualizaLista} />
                 </CardTitle>

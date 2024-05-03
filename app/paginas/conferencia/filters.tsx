@@ -4,6 +4,7 @@ import FilterOperacao from '@/app/Combobox/Filters/FilterOperacao';
 import FilterSituacao from '@/app/Combobox/Filters/FilterSituacao';
 import FilterTipoPeriodo from '@/app/Combobox/Filters/FilterTipoPeriodo';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useRouter, useSearchParams } from "next/navigation";
@@ -43,44 +44,54 @@ const Filters = () => {
     }
 
     return (
-        <div className="flex items-center justify-between max-h-full mx-auto ">
-            <form className="flex flex-1 items-start flex-col">
-                <div className="flex flex-1 items-center space-x-2 py-2">
-                    <div className='flex flex-col'>
-                        <Label className="py-2" htmlFor="tipoperiodo">Tipo Período:</Label>
-                        <FilterTipoPeriodo value={tipoperiodo} onSelect={setTipoperiodo} width={"100px"} />
+        <>
+            <div className="flex flex-row justify-between  py-2 self-center space-x-2">
+                <span className="py-2 px-2"> Consulta Conferência </span>
+                <Button onClick={Pesquisa} type="button">Pesquisar</Button>
+            </div>
+            <Card className="min-h-[170px]">
+                <CardContent>
+                    <div className="flex items-center justify-between max-h-full mx-auto ">
+                        <form className="flex flex-1 items-start flex-col">
+                            <div className="flex flex-1 items-center space-x-2 py-2">
+                                <div className='flex flex-col'>
+                                    <Label className="py-2" htmlFor="tipoperiodo">Tipo Período:</Label>
+                                    <FilterTipoPeriodo value={tipoperiodo} onSelect={setTipoperiodo} width={"100px"} />
+                                </div>
+                                <div className='flex flex-col'>
+                                    <Label className="py-2" htmlFor="datInicio">Data Início:</Label>
+                                    <Input type="date" id="datInicio"
+                                        name="datInicio" className="h-8 w-[150px] lg:w-[150px]"
+                                        value={datInicio}
+                                        onChange={(e) => setDatInicio(e.target.value)} />
+                                </div>
+                                <div className='flex flex-col'>
+                                    <Label className="py-2" htmlFor="datFim">Data Fim:</Label>
+                                    <Input type="date" id="datFim"
+                                        name="datFim" className="h-8 w-[150px] lg:w-[150px]"
+                                        value={datFim}
+                                        onChange={(e) => setDatFim(e.target.value)} />
+                                </div>
+                                <div className='flex flex-col self-end'>
+                                    <FilterSituacao classNameCombo="w-[175px] h-8" classNameLista="w-[250px] p-0" value={codsituacao == "" ? -1 : parseInt(codsituacao)} onSelect={setCodsituacao} />
+                                </div>
+
+                            </div>
+                            <div className="flex flex-1 items-center space-x-2 py-1">
+                                <div className='flex flex-col'>
+                                    <FilterOperacao classNameCombo="w-[360px] h-8" classNameLista="w-[360px] p-0" value={codoperacao} onSelect={setCodoperacao} />
+                                </div>
+                                <div className='flex flex-col'>
+                                    <FilterCliente classNameCombo="w-[330px]  h-8" classNameLista="w-[330px] p-0" value={codcliente} onSelect={setCodcliente} />
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div className='flex flex-col'>
-                        <Label className="py-2" htmlFor="datInicio">Data Início:</Label>
-                        <Input type="date" id="datInicio"
-                            name="datInicio" className="h-8 w-[150px] lg:w-[150px]"
-                            value={datInicio}
-                            onChange={(e) => setDatInicio(e.target.value)} />
-                    </div>
-                    <div className='flex flex-col'>
-                        <Label className="py-2" htmlFor="datFim">Data Fim:</Label>
-                        <Input type="date" id="datFim"
-                            name="datFim" className="h-8 w-[150px] lg:w-[150px]"
-                            value={datFim}
-                            onChange={(e) => setDatFim(e.target.value)} />
-                    </div>
-                    <div className='flex flex-col self-end'>
-                        <FilterSituacao classNameCombo="w-[175px] h-8" classNameLista="w-[250px] p-0" value={codsituacao =="" ? -1 : parseInt(codsituacao)} onSelect={setCodsituacao} />
-                    </div>
-                    <div className='flex flex-col align-bottom items-end'>
-                        <Button className="h-8 mt-8" onClick={Pesquisa} type="button">Pesquisar</Button>
-                    </div>
-                </div>
-                <div className="flex flex-1 items-center space-x-2 py-1">
-                    <div className='flex flex-col'>
-                        <FilterOperacao classNameCombo="w-[360px] h-8" classNameLista="w-[360px] p-0" value={codoperacao} onSelect={setCodoperacao} />
-                    </div>
-                    <div className='flex flex-col'>
-                        <FilterCliente classNameCombo="w-[330px]  h-8" classNameLista="w-[330px] p-0" value={codcliente} onSelect={setCodcliente} />
-                    </div>
-                </div>
-            </form>
-        </div>
+                </CardContent>
+            </Card>
+        </>
+
+
     )
 };
 

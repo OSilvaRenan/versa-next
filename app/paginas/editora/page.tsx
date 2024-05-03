@@ -21,11 +21,6 @@ export default async function EditoraPage() {
   var data = await fetchData();
 
   return (
-    <div className="mx-auto py-3">
-      <div className="mx-auto">
-        <p className="text-xl font-bold"> Consulta Editora </p>
-      </div>
       <EditoraTable data={data} />
-    </div>
   )
 }

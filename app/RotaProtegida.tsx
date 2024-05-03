@@ -6,7 +6,7 @@ import { redirect, usePathname, useRouter } from 'next/navigation';
 function RotaProtegida({ children }: any) {
     const router = useRouter();
     const pathname = usePathname();
-    
+
     useEffect(() => {
         const checkAuth = async () => {
             const session = await getSession();

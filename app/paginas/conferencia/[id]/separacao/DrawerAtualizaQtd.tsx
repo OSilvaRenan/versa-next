@@ -92,7 +92,7 @@ export function DrawerAtualizaQtd({ itens, setAtualizaLista, atualizaLista }: Pr
 
             <Dialog open={open} onOpenChange={OpenDialog} modal={true}>
                 <DialogTrigger asChild>
-                    <Button className="h-8">Inicia Separação</Button>
+                    <Button >Inicia Separação</Button>
                 </DialogTrigger>
                 {item ?
                     <DialogContent className="sm:max-w-[425px]" onPointerDownOutside={event => event.preventDefault()}>
