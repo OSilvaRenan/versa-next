@@ -10,3 +10,11 @@ export function formatarData(dataString: string): string {
 
   return `${dia}/${mes}/${ano}`;
 }
+
+export function truncateString(input: string, maxLength: number): string {
+  if (input.length <= maxLength) {
+      return input;
+  }
+  const truncated = input.substring(0, maxLength - 3) + "...";
+  return truncated;
+}

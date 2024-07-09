@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Check, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { CboData } from "./CboEstatica";
+import { truncateString } from "../functions/functions";
 
 interface Props {
     classNameCombo?: string;
@@ -41,7 +42,7 @@ export const CboDinamica = ({ classNameCombo, classNameLista, label, mostrarValu
                         // onClick={carregarOpcoes}
                         >
                             {itemLista.Value
-                                ? itemLista.Description != '' ? itemLista.Description : data.find((lista) => itemLista.Value === lista.Value.toString())?.Description ?? "Selecione o registro..."
+                                ? itemLista.Description != '' ? truncateString(itemLista.Description, 40): data.find((lista) => itemLista.Value === lista.Value.toString())?.Description ?? "Selecione o registro..."
                                 : "Selecione o registro..."}
 
                             <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />

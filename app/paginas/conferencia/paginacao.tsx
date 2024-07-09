@@ -10,7 +10,7 @@ import {
     PaginationStart
 } from "@/components/ui/pagination";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Page } from './ConferenciaDTO';
 
 interface Props {
@@ -23,10 +23,15 @@ const Paginacao = ({ page }: Props) => {
     const router = useRouter();
     const nroPages = Math.ceil(page.RecordsCount! / page.PageSize);
     const [pg, setPg] = useState(searchParams.get('pg') || '1');
+    const params = new URLSearchParams(searchParams);
+
+    useEffect(() => {
+        params.set('pg', '1');
+        const query = params.size ? params.toString() : '';
+        router.push('/paginas/conferencia?' + query);
+      }, [nroPages]);
 
     function EnviaDadosPaginacao(index: number) {
-
-        const params = new URLSearchParams(searchParams);
 
         if (index <= 0) {
             index = 1;

@@ -6,28 +6,16 @@ import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { ConferenciaResponseDTO } from '../ConferenciaDTO'
+import { ConferenciaResponseDTO, separacaoResponse } from '../ConferenciaDTO'
 
 interface Props {
     params: { id: string };
+    conferencia?: ConferenciaResponseDTO
 }
 
-export const FiltersItensPedido = ({ params }: Props) => {
+export const FiltersItensPedido = ({ params, conferencia }: Props) => {
 
-    const [conferencia, setConferencia] = useState<ConferenciaResponseDTO>();
-    const [loading, setLoading] = useState<boolean>(true);
-
-    const buscaDadosConferencia = async () => {
-        setLoading(true);
-        await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/conferencia/${params.id}`).then(response => {
-            setConferencia(response.data);
-            setLoading(false);
-        });
-    };
-
-    useEffect(() => {
-        buscaDadosConferencia();
-    }, [params.id]);
+  
 
     return (
         <div >

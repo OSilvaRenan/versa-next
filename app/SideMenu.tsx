@@ -13,7 +13,6 @@ export default function SideMenu() {
                            <Link href='/paginas/autor' className='text-zinc-300 hover:text-zinc-800 transition-colors'> Autor </Link>
                            <Link href='/paginas/conferencia' className='text-zinc-300 hover:text-zinc-800 transition-colors'> Conferência </Link>
                            <Link href='/paginas/editora' className='text-zinc-300 hover:text-zinc-800 transition-colors'> Editora </Link>
-                           <Link href='/paginas/pagamento' className='text-zinc-300 hover:text-zinc-800 transition-colors'> Pagamento </Link>
                         </AccordionContent>
                     </AccordionItem>
                 </Accordion>

@@ -29,7 +29,7 @@ interface Props {
 const FilterSituacao = ({ value, classNameCombo, classNameLista, onSelect }: Props) => {
 
     const [data, setData] = useState<CboData[]>([]);
-
+const [itemListaSelecionado, setItemListaSelecionado]= useState<CboData>({ Value: value.toString(), Description: '' });
     const carregarOpcoes = async () => {
         try {
 
@@ -51,7 +51,8 @@ const FilterSituacao = ({ value, classNameCombo, classNameLista, onSelect }: Pro
     return (
         <div className="flex items-end">
             <CboEstatica classNameCombo={classNameCombo} classNameLista={classNameLista} label={"Situação:"}
-                itemListaSelecionado={{ Value: value.toString(), Description: '' }} onSelect={onSelect}
+                itemListaSelecionado={itemListaSelecionado}
+                setItemListaSelecionado={setItemListaSelecionado} onSelect={onSelect}
                 carregarOpcoes={carregarOpcoes}
                 data={data} setData={setData}
                 mostrarValue={false} />

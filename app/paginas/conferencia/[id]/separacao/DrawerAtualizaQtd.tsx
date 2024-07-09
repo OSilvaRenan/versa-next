@@ -21,7 +21,7 @@ import { DialogDescription } from "@radix-ui/react-dialog"
 import * as React from "react"
 import { useCallback, useEffect, useState } from "react"
 import { FormQtd } from "./FormQtd"
-import { separacaoResponse } from "./page"
+import { separacaoResponse } from "../../ConferenciaDTO"
 
 interface Props {
     itens: separacaoResponse[];

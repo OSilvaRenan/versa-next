@@ -94,10 +94,10 @@ const FilterCliente = ({ classNameCombo, classNameLista, value, onSelect }: Prop
         //         </Command>
         //     </PopoverContent>
         // </Popover>
-<CboDinamica  classNameCombo={classNameCombo} classNameLista={classNameLista}  label='Cliente:'
-            data={data} carregarOpcoes={carregarOpcoes} mostraDadosLista={false}
+        <CboDinamica classNameCombo={classNameCombo} classNameLista={classNameLista} label='Cliente:'
+            data={data} carregarOpcoes={carregarOpcoes} mostrarValue={false}
             itemListaSelecionado={{ Value: value, Description: '' }} onSelect={onSelect}
-             />
+        />
     );
 };
 

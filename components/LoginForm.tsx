@@ -3,12 +3,23 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import React from 'react';
 import { Button } from '@/components/ui/button';
-
 import { signIn } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+const schema = yup.object({
+    Nomeditora: yup.string().required('Este campo é obrigatório'),
+    Codeditoragrupo: yup.string()
+});
 
 export default function LoginForm() {
 
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema),
+    });
+    
     const searchParams = useSearchParams();
 
     const error = searchParams.get('error');
@@ -24,7 +35,7 @@ export default function LoginForm() {
         signIn(
             "credentials", {
             ...data,
-            callbackUrl: "/paginas/home"
+            callbackUrl: "/"
         }
         )
     }

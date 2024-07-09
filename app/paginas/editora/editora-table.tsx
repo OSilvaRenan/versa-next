@@ -11,11 +11,14 @@ import {
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
 import { apenasNumeros } from "../../functions/functions";
-import ListaEditorasGrupo from "../../Combobox/FilterEditoraGrupo";
+import ListaEditorasGrupo from "../../Combobox/ListaEditorasGrupo";
 import PaginacaoEditora from "./paginacaoEditora";
 import { EditoraDTO } from "./EditoraDTO";
 import { DialogCadastroEditora } from "./DialogCadastroEditora";
 import { Card, CardContent } from "@/components/ui/card";
+import { useRouter, useSearchParams } from "next/navigation";
+import Paginacao from "@/components/Paginacao";
+import { CboData } from "@/app/Combobox/CboEstatica";
 
 interface Props {
   data: EditoraDTO[]
@@ -30,7 +33,16 @@ export default function EditoraTable({ data }: Props) {
   const [editoras, setEditoras] = useState<EditoraDTO[]>([]);
   const [pageCount, setPageCount] = useState(0);
   const [codeditoragrupo, setCodeditoragrupo] = useState<string>('');
+  const [dataCbo, setDataCbo] = useState<CboData>({
+    Value: '',
+    Description: ''
+  });
 
+  const searchParams = useSearchParams()!;
+  const router = useRouter();
+  const params = new URLSearchParams(searchParams);
+
+  
   useEffect(() => {
     // Filtragem com base no filtro de valor
     const filteredByFilterValue = filterValue
@@ -60,12 +72,26 @@ export default function EditoraTable({ data }: Props) {
 
   const goToPage = (pageNumber: number) => {
     setPageIndex(pageNumber);
+    params.set('pg', (pageNumber + 1).toString());
+    const query = params.size ? params.toString() : '';
+    router.push('/paginas/editora?' + query);
   };
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilterValue(e.target.value);
     setPageIndex(0);
   };
+
+  useEffect(() => {
+    params.set('pg', '1');
+    const query = params.size ? params.toString() : '';
+    router.push('/paginas/editora?' + query);
+  }, [pageCount]);
+
+  // useEffect(() => {
+  //   params.set('pg', '1');
+
+  // }, [pageCount]);
 
   return (
     <div className="mx-auto">
@@ -90,10 +116,7 @@ export default function EditoraTable({ data }: Props) {
             </div>
             <div className='flex flex-col'>
               <ListaEditorasGrupo classNameCombo="w-[200px] h-8" classNameLista="w-[200px] p-0"
-                itemSelecionado={{
-                  Value: '',
-                  Description: ''
-                }}
+                value={dataCbo} onChange={setDataCbo} id="cboEditoraGrupoFilter"
               />
             </div>
           </div>
@@ -130,9 +153,9 @@ export default function EditoraTable({ data }: Props) {
                 </Table>
               }
             </div>
-            <PaginacaoEditora
-              currentPage={pageIndex}
-              totalPages={pageCount}
+            <Paginacao dadosPage={{PageIndex: pageIndex,  TotalPage: pageCount, PageSize: pageSize}}
+              // currentPage={pageIndex}
+              // totalPages={pageCount}
               onPageChange={goToPage}
             />
 

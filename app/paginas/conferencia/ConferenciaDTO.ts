@@ -3,6 +3,7 @@ export interface Page {
   RecordsCount?: number;
   PageIndex: number;
   PageSize: number;
+  TotalPage?: number;
 }
 
 export interface ConferenciaRequestDTO {

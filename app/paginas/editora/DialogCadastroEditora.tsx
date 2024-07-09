@@ -21,12 +21,10 @@ interface Props {
 }
 
 export function DialogCadastroEditora({ codeditora }: Props) {
-
     const [open, setOpen] = useState(false);
     const [editora, setEditora] = useState<EditoraDTO>();
 
     const buscaDadosEditora = async () => {
-
         await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/produto/editora/${codeditora}`).then(response => {
             setEditora(response.data);
             setOpen(true);

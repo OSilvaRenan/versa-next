@@ -26,7 +26,7 @@ export default async function RootLayout({
   return (
     <AuthProvider>
       <html lang="en" className={inter.className}>
-        <body className='max-h-screen bg-slate-400 '>
+        <body className='max-h-screen bg-slate-400'>
           <NavBar />
           <RotaProtegida>
             {session ?

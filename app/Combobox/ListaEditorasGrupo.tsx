@@ -6,12 +6,17 @@ import { CboData, CboEstatica } from './CboEstatica';
 interface Props {
     classNameCombo?: string;
     classNameLista?: string;
-    itemSelecionado: CboData;
+    value?: CboData;
+    onChange?: (value?: CboData) => void;
+    id?: string
 }
 
-const ListaEditorasGrupo = ({ classNameCombo, classNameLista, itemSelecionado }: Props) => {
+const ListaEditorasGrupo = ({ id, 
+    classNameCombo, classNameLista, value, 
+    onChange }: Props) => {
 
     const [data, setData] = useState<CboData[]>([]);
+
     const carregarOpcoes = async () => {
         try {
             await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/produto/editoragrupo`).then(response => {
@@ -31,9 +36,14 @@ const ListaEditorasGrupo = ({ classNameCombo, classNameLista, itemSelecionado }:
 
     return (
         <div className="flex items-end">
+            <input type='hidden'
+                value={value && value.Value !== '-1' ? value.Value : ''}
+                id={id} 
+                />
             <CboEstatica classNameCombo={classNameCombo} classNameLista={classNameLista} label={"Grupo Empresarial:"}
-                itemListaSelecionado={itemSelecionado}
+                itemListaSelecionado={value}
                 carregarOpcoes={carregarOpcoes}
+                setItemListaSelecionado={onChange}
                 data={data} setData={setData}
                 mostrarValue={true} />
         </div>

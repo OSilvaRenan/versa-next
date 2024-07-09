@@ -7,9 +7,7 @@ import { PaginedList } from "../autor/columns";
 import { formatarData } from "@/app/functions/functions";
 import Paginacao from "./paginacao";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 import { Check, Pencil, ShoppingCart } from "lucide-react";
 
 export interface searchQuery {

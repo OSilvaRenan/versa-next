@@ -30,20 +30,20 @@ export const LstItensPedido = ({ params }: Props) => {
 
     return (
         <div className='py-5' >
-            <Card>
-                <CardTitle className='container flex flex-row justify-between  py-2 self-center space-x-2 h-8'>
+            <Card className="min-h-[14rem] ">
+                <CardTitle className='container flex flex-row justify-between py-2 self-center space-x-2 h-8'>
                     <span className='h-8 py-1'>Itens deste pedido</span>
                     <DrawerAtualizaQtd itens={itens} setAtualizaLista={setAtualizaLista} atualizaLista={atualizaLista} />
                 </CardTitle>
                 <CardContent className='container py-2'>
-                    <div className="container mx-auto min-h-12 py-2">
+                    <div className="container mx-auto min-h-14 py-2">
                         {loading ? <>
                             <Skeleton className="h-[50px] w-[300] bg-slate-300 my-2 " />
                             <Skeleton className="h-[200px] w-[300] bg-slate-300 my-2" />
                         </>
                             :
                             itens.length === 0 ? <span>Nenhum item encontrado</span> :
-                                <Table className="container mx-auto max-h-20">
+                                <Table className="mx-auto max-h-20">
                                     <TableHeader>
                                         <TableRow>
                                             <TableHead className="w-[100px]">Código</TableHead>
