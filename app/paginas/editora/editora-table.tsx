@@ -54,15 +54,15 @@ export default function EditoraTable({ data }: Props) {
       : data;
 
     // Filtragem adicional com base no código do grupo de editoras
-    const filteredByCodeditoragrupo = codeditoragrupo
+    const filteredByCodeditoragrupo = dataCbo.Value != '-1'
       ? filteredByFilterValue.filter(editora =>
-        editora.Codeditoragrupo.toString() === codeditoragrupo
+        editora.Codeditoragrupo.toString() === dataCbo.Value
       )
       : filteredByFilterValue;
 
     setFilteredData(filteredByCodeditoragrupo);
     setPageCount(Math.ceil(filteredByCodeditoragrupo.length / pageSize));
-  }, [filterValue, codeditoragrupo, data, pageSize]);
+  }, [filterValue, dataCbo.Value, data, pageSize]);
 
   // Atualiza a lista de editoras na página atual
   useEffect(() => {
@@ -84,6 +84,7 @@ export default function EditoraTable({ data }: Props) {
 
   useEffect(() => {
     params.set('pg', '1');
+    setPageIndex(0);
     const query = params.size ? params.toString() : '';
     router.push('/paginas/editora?' + query);
   }, [pageCount]);

@@ -11,7 +11,7 @@ import { useState } from "react";
 import { EditoraDTO } from "./EditoraDTO";
 import { Button } from "@/components/ui/button";
 import { FormEditora } from "./FormEditora";
-import { FilePenLine, Pencil } from "lucide-react";
+import { Pencil } from "lucide-react";
 
 interface Props {
     codeditora?: number;
@@ -33,7 +33,6 @@ export function DialogCadastroEditora({ codeditora }: Props) {
 
 
     function OpenDialog() {
-
         if (open == false) {
             if (codeditora || codeditora == 0) {
                 buscaDadosEditora();
@@ -48,15 +47,14 @@ export function DialogCadastroEditora({ codeditora }: Props) {
     return (
         <Dialog open={open} onOpenChange={OpenDialog} modal={true}>
             <DialogTrigger asChild>
-            {codeditora || codeditora == 0 ? 
-
-                <Button className="p-2" variant="ghost"> 
-               <Pencil className="p-1"/> 
-               </Button>
-                :
-                <Button className=" min-w-[100px] w-[100px] max-w-[100px]" variant="secondary"> 
-               Nova
-                </Button>
+                {codeditora || codeditora == 0 ?
+                    <Button className="p-2" variant="ghost">
+                        <Pencil className="p-1" />
+                    </Button>
+                    :
+                    <Button className=" min-w-[100px] w-[100px] max-w-[100px]" variant="secondary">
+                        Nova
+                    </Button>
                 }
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]" onPointerDownOutside={event => event.preventDefault()}>

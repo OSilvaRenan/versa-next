@@ -7,12 +7,12 @@ interface Props {
     classNameCombo?: string;
     classNameLista?: string;
     value?: CboData;
-    onChange?: (value?: CboData) => void;
+    onChange: (value: CboData) => void;
     id?: string
 }
 
-const ListaEditorasGrupo = ({ id, 
-    classNameCombo, classNameLista, value, 
+const ListaEditorasGrupo = ({ id,
+    classNameCombo, classNameLista, value,
     onChange }: Props) => {
 
     const [data, setData] = useState<CboData[]>([]);
@@ -38,8 +38,8 @@ const ListaEditorasGrupo = ({ id,
         <div className="flex items-end">
             <input type='hidden'
                 value={value && value.Value !== '-1' ? value.Value : ''}
-                id={id} 
-                />
+                id={id}
+            />
             <CboEstatica classNameCombo={classNameCombo} classNameLista={classNameLista} label={"Grupo Empresarial:"}
                 itemListaSelecionado={value}
                 carregarOpcoes={carregarOpcoes}

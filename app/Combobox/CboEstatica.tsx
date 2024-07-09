@@ -71,7 +71,6 @@ export const CboEstatica = ({classNameCombo, classNameLista, label, mostrarValue
                                         key={lista.Value}
                                         value={lista.Description}
                                         onSelect={() => {
-                                            
                                             setItemListaSelecionado? setItemListaSelecionado(itemListaSelecionado?.Value == lista.Value ?
                                                 { Value: "-1", Description: "" } :
                                                 { Value: lista.Value.toString(), Description: lista.Description }):
@@ -94,8 +93,7 @@ export const CboEstatica = ({classNameCombo, classNameLista, label, mostrarValue
                     </PopoverContent>
                 </Popover>
             </div>
-            {mostrarValue ?
-                <>
+            {mostrarValue ??
                     <div className="grid gap-2 self-end px-2">
                         <Input type="text" 
                            value={itemListaSelecionado && itemListaSelecionado.Value !== '-1' ? itemListaSelecionado.Value : ''}
@@ -105,8 +103,7 @@ export const CboEstatica = ({classNameCombo, classNameLista, label, mostrarValue
                         
                             />
                     </div>
-                </>
-                : null}
+               }
         </div >
 
     )

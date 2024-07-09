@@ -29,10 +29,10 @@ interface Props {
 const FilterSituacao = ({ value, classNameCombo, classNameLista, onSelect }: Props) => {
 
     const [data, setData] = useState<CboData[]>([]);
-const [itemListaSelecionado, setItemListaSelecionado]= useState<CboData>({ Value: value.toString(), Description: '' });
+    const [itemListaSelecionado, setItemListaSelecionado] = useState<CboData>({ Value: value.toString(), Description: '' });
+   
     const carregarOpcoes = async () => {
         try {
-
             await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/situacoes`).then(response => {
 
                 const dadosTransformados: CboData[] = response.data.map((item: SituacaoResponse) => ({
@@ -50,12 +50,12 @@ const [itemListaSelecionado, setItemListaSelecionado]= useState<CboData>({ Value
 
     return (
         <div className="flex items-end">
-            <CboEstatica classNameCombo={classNameCombo} classNameLista={classNameLista} label={"Situação:"}
-                itemListaSelecionado={itemListaSelecionado}
-                setItemListaSelecionado={setItemListaSelecionado} onSelect={onSelect}
-                carregarOpcoes={carregarOpcoes}
-                data={data} setData={setData}
-                mostrarValue={false} />
+            <CboEstatica classNameCombo={classNameCombo} classNameLista={classNameLista}
+                label={"Situação:"} data={data} setData={setData}
+                carregarOpcoes={carregarOpcoes} mostrarValue={false}
+                itemListaSelecionado={itemListaSelecionado} setItemListaSelecionado={setItemListaSelecionado}
+                 onSelect={onSelect}
+            />
         </div>
     );
 };

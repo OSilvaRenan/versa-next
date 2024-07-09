@@ -18,16 +18,16 @@ const FilterTipoPeriodo = ({ width, value, onSelect }: Props) => {
     ]
 
     return (
-        <Select value={value} onValueChange={(selectedValue) => {onSelect(selectedValue)} }>
-                            <SelectTrigger className="h-8 w-[200px] lg:w-[200px]"  id="tipoperiodo" name="tipoperiodo" >
-                                <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {tiposPeriodo.map((periodo) => (
-                                    <SelectItem key={periodo.id} value={periodo.id}>{periodo.label}</SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+        <Select value={value} onValueChange={(selectedValue) => { onSelect(selectedValue) }}>
+            <SelectTrigger className="h-8 w-[200px] lg:w-[200px]" id="tipoperiodo" name="tipoperiodo" >
+                <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+                {tiposPeriodo.map((periodo) => (
+                    <SelectItem key={periodo.id} value={periodo.id}>{periodo.label}</SelectItem>
+                ))}
+            </SelectContent>
+        </Select>
 
     );
 };

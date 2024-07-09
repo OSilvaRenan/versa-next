@@ -14,18 +14,20 @@ interface Props {
     classNameLista?: string;
     label?: string;
     data: CboData[];
+    setData: (value: CboData[]) => void;
     carregarOpcoes: (value: any) => void;
     onSelect: (value: string) => void
     itemListaSelecionado: CboData;
     mostrarValue: boolean;
+    setItemListaSelecionado?: (value: CboData)=> void;
 }
 
-export const CboDinamica = ({ classNameCombo, classNameLista, label, mostrarValue, data, itemListaSelecionado,
+export const CboDinamica = ({ classNameCombo, classNameLista, label, mostrarValue, data, itemListaSelecionado, setItemListaSelecionado,
     onSelect,
     carregarOpcoes }: Props) => {
 
     const [open, setOpen] = useState(false);
-    const [itemLista, setItemLista] = useState<CboData>(itemListaSelecionado);
+    // const [itemLista, setItemLista] = useState<CboData>(itemListaSelecionado);
 
     return (
         <div className="flex">
@@ -41,8 +43,8 @@ export const CboDinamica = ({ classNameCombo, classNameLista, label, mostrarValu
                             className="justify-between px-1 py-4"
                         // onClick={carregarOpcoes}
                         >
-                            {itemLista.Value
-                                ? itemLista.Description != '' ? truncateString(itemLista.Description, 40): data.find((lista) => itemLista.Value === lista.Value.toString())?.Description ?? "Selecione o registro..."
+                            {itemListaSelecionado
+                                ? itemListaSelecionado.Description != '' ? truncateString(itemListaSelecionado.Description, 20) : data.find((lista) => itemListaSelecionado.Value === lista.Value.toString())?.Description ?? "Selecione o registro..."
                                 : "Selecione o registro..."}
 
                             <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
@@ -61,9 +63,10 @@ export const CboDinamica = ({ classNameCombo, classNameLista, label, mostrarValu
                                         key={lista.Value}
                                         value={lista.Description}
                                         onSelect={() => {
-                                            setItemLista(itemLista.Value == lista.Value ?
-                                                { Value: "", Description: "" } :
-                                                { Value: lista.Value.toString(), Description: lista.Description });
+                                            setItemListaSelecionado? setItemListaSelecionado(itemListaSelecionado?.Value == lista.Value ?
+                                                { Value: "-1", Description: "" } :
+                                                { Value: lista.Value.toString(), Description: lista.Description }):
+                                                null;
                                             onSelect ? onSelect(lista.Value.toString()) : null
                                             setOpen(false);
 
@@ -72,7 +75,7 @@ export const CboDinamica = ({ classNameCombo, classNameLista, label, mostrarValu
                                         <Check
                                             className={cn(
                                                 "mr-2 h-4 w-4",
-                                                itemLista.Value === lista.Value ? "opacity-100" : "opacity-0"
+                                                itemListaSelecionado != undefined && itemListaSelecionado.Value !='-1' && itemListaSelecionado.Value == lista.Value ? "opacity-100" : "opacity-0"
                                             )}
                                         />
                                         {lista.Description}
@@ -85,18 +88,15 @@ export const CboDinamica = ({ classNameCombo, classNameLista, label, mostrarValu
 
 
             </div>
-            {mostrarValue ?
-                <>
+            {mostrarValue ??
                     <div className="grid gap-2 self-end px-2">
-                        <Input type="text" id="value"
-                            value={itemLista.Value}
+                        <Input type="text" 
+                           value={itemListaSelecionado && itemListaSelecionado.Value !== '-1' ? itemListaSelecionado.Value : ''}
                             className="w-[50px] h-8 py-4"
-                        //   onChange={(e) => setLocalizacao(e.target.value)} onKeyDown={ConferePeloEnter} 
-                        />
+                            id="formcodeditoragrupo"
+                            />
                     </div>
-
-                </>
-                : null}
+               }
         </div >
 
     )

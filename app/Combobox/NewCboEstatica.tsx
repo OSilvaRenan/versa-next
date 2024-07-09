@@ -45,7 +45,7 @@ interface Props {
 
 export const Select = forwardRef<HTMLSelectElement, Props & ReturnType<UseFormRegister<formEditora>>>(({ onChange, onBlur, name, label,
     classNameCombo, carregarOpcoes, itemListaSelecionado, data, classNameLista,
-     setData, setItemListaSelecionado, onSelect}, ref) => {
+    setData, setItemListaSelecionado, onSelect }, ref) => {
 
     const [open, setOpen] = useState(false);
 

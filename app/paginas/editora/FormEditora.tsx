@@ -17,14 +17,11 @@ interface PropsForm {
     className?: React.ComponentProps<"form">;
 }
 
-export interface formEditora{
+export interface formEditora {
     Nomeditora: string;
-     Editoragrupo: CboData;
+    Editoragrupo: CboData;
     // Age: number;
 }
-
-
-
 
 export function FormEditora({ item, className }: PropsForm) {
 
@@ -32,15 +29,21 @@ export function FormEditora({ item, className }: PropsForm) {
     //     resolver: yupResolver(schema),
     // });
 
-    
-    const { register, handleSubmit, formState: { errors } } = useForm<formEditora>();
+    const { register, handleSubmit, formState: { errors } } = useForm<formEditora>(
+        {
+            defaultValues: {
+                Nomeditora: item?.Nomeditora,
+                Editoragrupo: {
+                    Description: item?.Nomeditora.trimEnd(),
+                    Value: item?.Codeditoragrupo.toString()
+                }
+            }
+        }
+    );
 
     const PostEditora = async (novaEditora: any) => {
-
-        console.log(novaEditora)
-         novaEditora.Codeditoragrupo = itemSelecionado.Value != "-1"?  parseInt(itemSelecionado.Value) : 0;
-
-         await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/editora`, novaEditora);
+        novaEditora.Codeditoragrupo = itemSelecionado.Value != "-1" ? parseInt(itemSelecionado.Value) : 0;
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/editora`, novaEditora);
     }
 
     const onSubmit = (data: any) => {
@@ -54,25 +57,24 @@ export function FormEditora({ item, className }: PropsForm) {
         Description: item?.Nomeditoragrupo ?? ""
     });
 
-    
-    const [data, setData] = useState<CboData[]>([]);
+    // const [data, setData] = useState<CboData[]>([]);
 
-    const carregarOpcoes = async () => {
-        try {
-            await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/produto/editoragrupo`).then(response => {
+    // const carregarOpcoes = async () => {
+    //     try {
+    //         await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/produto/editoragrupo`).then(response => {
 
-                const dadosTransformados: CboData[] = response.data.Dados.map((item: EditoraDTO) => ({
-                    Value: item.Codeditoragrupo,
-                    Description: item.Nomeditoragrupo
-                }));
+    //             const dadosTransformados: CboData[] = response.data.Dados.map((item: EditoraDTO) => ({
+    //                 Value: item.Codeditoragrupo,
+    //                 Description: item.Nomeditoragrupo
+    //             }));
 
-                setData(dadosTransformados);
-            });
-        } catch (erro) {
-            console.error('Erro ao carregar opções:', erro);
-        } finally {
-        }
-    };
+    //             setData(dadosTransformados);
+    //         });
+    //     } catch (erro) {
+    //         console.error('Erro ao carregar opções:', erro);
+    //     } finally {
+    //     }
+    // };
 
     return (
         <form className={cn("grid items-start gap-6", className)} onSubmit={handleSubmit(onSubmit)}>
@@ -84,19 +86,19 @@ export function FormEditora({ item, className }: PropsForm) {
                     // onChange={(e) => setnomeditora(e.target.value)}
                     {...register("Nomeditora", { required: true })}
                 />
-                {errors.Nomeditora && <span className="text-red-500 text-sm pl-2">This field is required</span>}
-            </div> 
-            
-           <div className="grid grid-cols-2 gap-2">
-                <ListaEditorasGrupo 
-                classNameCombo="w-[170px] h-8" classNameLista="w-[250px] p-0"
+                {errors.Nomeditora && <span className="text-red-500 text-sm pl-1">Esse campo é obrigatório</span>}
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+                <ListaEditorasGrupo
+                    classNameCombo="w-[170px] h-8" classNameLista="w-[250px] p-0"
                     value={itemSelecionado}
-                    //  onChange={setItemSelecionado}
-                      id="Codeditoragrupo"
-                    //   {...register("Editoragrupo")}
+                    onChange={setItemSelecionado}
+                    id="Codeditoragrupo"
+                //   {...register("Editoragrupo")}
                 />
             </div>
-                  {/* <Select label="Editoragrupo" {...register("Editoragrupo")} 
+            {/* <Select label="Editoragrupo" {...register("Editoragrupo")} 
                   itemListaSelecionado={itemSelecionado}
                   carregarOpcoes={carregarOpcoes}
                 //   setItemListaSelecionado={onChange}
@@ -106,10 +108,7 @@ export function FormEditora({ item, className }: PropsForm) {
                   
                   /> */}
 
-            <Button
-            //  type="button"
-            // onClick={PostEditora}
-            >Salvar</Button>
+            <Button>Salvar</Button>
         </form >
     )
 }

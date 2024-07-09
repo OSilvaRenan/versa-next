@@ -35,7 +35,7 @@ export default function LoginForm() {
         signIn(
             "credentials", {
             ...data,
-            callbackUrl: "/"
+            callbackUrl: "/paginas/home"
         }
         )
     }
