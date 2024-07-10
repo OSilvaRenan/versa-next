@@ -14,10 +14,7 @@ interface Props {
 }
 
 export const FiltersItensPedido = ({ params, conferencia }: Props) => {
-
-  
-
-    return (
+      return (
         <div >
             <Card>
                 <CardContent className='container py-2'>
