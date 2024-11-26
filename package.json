@@ -2,13 +2,14 @@
   "name": "versa-next",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+  "scripts": { 
+    "dev": "node server.js", 
+    "build": "next build", 
+    "start": "node server.js", 
+    "lint": "next lint" 
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
@@ -50,6 +51,7 @@
     "next-themes": "^0.2.1",
     "next-update": "^3.6.0",
     "postcss": "8.4.33",
+    "quagga": "^0.12.1",
     "react": "18.2.0",
     "react-day-picker": "^8.10.0",
     "react-dom": "18.2.0",

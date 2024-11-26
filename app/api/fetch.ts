@@ -8,7 +8,6 @@ export async function fetchWrapper<T = unknown>(
     init
   );
 
-
     const result = await data.json();
 
    return result as T;

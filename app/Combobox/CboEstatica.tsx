@@ -42,9 +42,8 @@ export const CboEstatica = ({classNameCombo, classNameLista, label, mostrarValue
     };
 
     return (
-        <div className="flex">
-            <div className="grid gap-2 self-end">
-                <Label htmlFor="controlepopover"> {label}</Label>
+        <div className="flex flex-col">
+                <Label htmlFor="controlepopover" className="py-2"> {label}</Label>
                 <Popover open={open} onOpenChange={setOpen} >
                     <PopoverTrigger asChild id="controlepopover" className={classNameCombo ?? "w-[360px] h-8"}>
                         <Button
@@ -56,7 +55,7 @@ export const CboEstatica = ({classNameCombo, classNameLista, label, mostrarValue
                             {itemListaSelecionado
                                 ? itemListaSelecionado.Description != '' ? truncateString(itemListaSelecionado.Description, 20) : data.find((lista) => itemListaSelecionado.Value === lista.Value.toString())?.Description ?? "Selecione o registro..."
                                 : "Selecione o registro..."}
-                            <ChevronDown className="h-4 w-4 shrink-0 opacity-50 z-0" />
+                            <ChevronDown className="h-4 w-4 shrink-0 text-slate-400" />
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className={classNameLista ?? "w-[360px] p-0"}>
@@ -92,12 +91,10 @@ export const CboEstatica = ({classNameCombo, classNameLista, label, mostrarValue
                         </Command>
                     </PopoverContent>
                 </Popover>
-            </div>
             {mostrarValue ??
                     <div className="grid gap-2 self-end px-2">
                         <Input type="text" 
                            value={itemListaSelecionado && itemListaSelecionado.Value !== '-1' ? itemListaSelecionado.Value : ''}
-
                             className="w-[50px] h-8 py-4"
                             id="formcodeditoragrupo"
                         

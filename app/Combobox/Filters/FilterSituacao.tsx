@@ -49,14 +49,12 @@ const FilterSituacao = ({ value, classNameCombo, classNameLista, onSelect }: Pro
     };
 
     return (
-        <div className="flex items-end">
             <CboEstatica classNameCombo={classNameCombo} classNameLista={classNameLista}
                 label={"Situação:"} data={data} setData={setData}
                 carregarOpcoes={carregarOpcoes} mostrarValue={false}
                 itemListaSelecionado={itemListaSelecionado} setItemListaSelecionado={setItemListaSelecionado}
                  onSelect={onSelect}
             />
-        </div>
     );
 };
 

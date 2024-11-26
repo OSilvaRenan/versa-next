@@ -30,10 +30,8 @@ export const CboDinamica = ({ classNameCombo, classNameLista, label, mostrarValu
     // const [itemLista, setItemLista] = useState<CboData>(itemListaSelecionado);
 
     return (
-        <div className="flex">
-            <div className="grid gap-2 self-end">
-                <Label htmlFor="controlepopover"> {label}</Label>
-
+        <div className="flex flex-col">
+                <Label htmlFor="controlepopover" className="py-2">{label}</Label>
                 <Popover open={open} onOpenChange={setOpen}  >
                     <PopoverTrigger asChild id="controlepopover" className={classNameCombo ?? "w-[360px] h-8"}>
                         <Button
@@ -47,7 +45,7 @@ export const CboDinamica = ({ classNameCombo, classNameLista, label, mostrarValu
                                 ? itemListaSelecionado.Description != '' ? truncateString(itemListaSelecionado.Description, 20) : data.find((lista) => itemListaSelecionado.Value === lista.Value.toString())?.Description ?? "Selecione o registro..."
                                 : "Selecione o registro..."}
 
-                            <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
+                            <ChevronDown className="h-4 w-4 shrink-0 text-slate-400" />
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent
@@ -85,9 +83,6 @@ export const CboDinamica = ({ classNameCombo, classNameLista, label, mostrarValu
                         </Command>
                     </PopoverContent>
                 </Popover>
-
-
-            </div>
             {mostrarValue ??
                     <div className="grid gap-2 self-end px-2">
                         <Input type="text" 

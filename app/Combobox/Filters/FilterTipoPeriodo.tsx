@@ -8,7 +8,7 @@ interface Props {
     onSelect: (value: string) => void
 }
 
-const FilterTipoPeriodo = ({ width, value, onSelect }: Props) => {
+const FilterTipoPeriodo = ({ value, onSelect }: Props) => {
 
     const tiposPeriodo = [
         { id: "0", label: "Inicio" },
@@ -19,7 +19,7 @@ const FilterTipoPeriodo = ({ width, value, onSelect }: Props) => {
 
     return (
         <Select value={value} onValueChange={(selectedValue) => { onSelect(selectedValue) }}>
-            <SelectTrigger className="h-8 w-[200px] lg:w-[200px]" id="tipoperiodo" name="tipoperiodo" >
+            <SelectTrigger className="h-8 lg:w-[195px] w-[160px] min-w-full max-w-full" id="tipoperiodo" name="tipoperiodo" >
                 <SelectValue />
             </SelectTrigger>
             <SelectContent>

@@ -51,8 +51,8 @@ declare module "next-auth/jwt" {
 
 const handler = NextAuth({
     pages: {
-        signIn: "/",
-        signOut: "/"
+        signIn: "/login",
+        signOut: "/login"
     },
     callbacks: {
         async jwt({ token, user }) {

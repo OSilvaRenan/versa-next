@@ -8,6 +8,7 @@ import { getServerSession } from 'next-auth'
 import LoginForm from '@/components/LoginForm'
 import { AuthProvider } from './providers/auth-provider'
 import RotaProtegida from './RotaProtegida'
+import MobileNav from '@/components/Responsivo/Menubar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,13 +27,19 @@ export default async function RootLayout({
   return (
     <AuthProvider>
       <html lang="en" className={inter.className}>
-        <body className='max-h-screen bg-slate-400'>
+        <head>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          </meta>
+        </head>
+        <body className='max-h-screen max-w-full w-full  bg-slate-400'>
           <NavBar />
           <RotaProtegida>
             {session ?
               <main className='flex '>
-                <SideMenu />
-                <div className="container ml-[16.7%] h-screen pb-4 pt-14 py-4">
+                <div className="hidden lg:flex flex-start pt-14 px-4">
+                  <SideMenu />
+                </div>
+                <div className="lg:container w-full lg:ml-[16.7%] pb-4 pt-14">
                   {children}
                   <Toaster />
                 </div>
@@ -41,7 +48,6 @@ export default async function RootLayout({
               <LoginForm />
             }
           </RotaProtegida>
-
         </body>
       </html>
     </AuthProvider>

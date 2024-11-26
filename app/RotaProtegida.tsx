@@ -10,9 +10,9 @@ function RotaProtegida({ children }: any) {
     useEffect(() => {
         const checkAuth = async () => {
             const session = await getSession();
-            if (!session && pathname !== '/') {
+            if (!session && pathname !== '/login') {
                 // Redireciona para a página de login apenas se não estiver já nela
-                router.push('/');
+                router.push('/login');
             }
         };
 
