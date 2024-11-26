@@ -7,45 +7,28 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { separacaoResponse } from '../../ConferenciaDTO'
 
 interface Props {
-    params: { id: string };
+    itens: separacaoResponse[]
+    loading: boolean;
 }
 
-export const LstItensPedido = ({ params }: Props) => {
-
-    const [itens, setItens] = useState<separacaoResponse[]>([]);
-    const [atualizaLista, setAtualizaLista] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(true);
-
-    const buscaItensConferencia = async () => {
-        setLoading(true);
-        await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/conferencia/${params.id}/separacao/produtos`).then(response => {
-            setItens(response.data);
-            setLoading(false);
-        });
-    };
-
-    useEffect(() => {
-        buscaItensConferencia();
-    }, [params.id, atualizaLista]);
-
+export const LstItensPedido = ({ itens, loading }: Props) => {
     return (
         <div className='py-5' >
             <Card className="min-h-[14rem] ">
                 <CardTitle className='container flex flex-row justify-between py-2 self-center space-x-2 h-8'>
                     <span className='h-8 py-1'>Itens deste pedido</span>
-                    <DrawerAtualizaQtd itens={itens} setAtualizaLista={setAtualizaLista} atualizaLista={atualizaLista} />
                 </CardTitle>
-                <CardContent className='container py-2'>
-                    <div className="container mx-auto min-h-14 py-2">
+                <CardContent className='py-2'>
+                    <div className="mx-auto min-h-14 py-2">
                         {loading ? <>
                             <Skeleton className="h-[50px] w-[300] bg-slate-300 my-2 " />
                             <Skeleton className="h-[200px] w-[300] bg-slate-300 my-2" />
                         </>
                             :
                             itens.length === 0 ? <span>Nenhum item encontrado</span> :
-                                <Table className="mx-auto max-h-20">
+                                <Table className="max-h-20">
                                     <TableHeader>
-                                        <TableRow>
+                                        <TableRow >
                                             <TableHead className="w-[100px]">Código</TableHead>
                                             <TableHead>Isbn </TableHead>
                                             <TableHead>Produto</TableHead>
@@ -56,13 +39,13 @@ export const LstItensPedido = ({ params }: Props) => {
                                     </TableHeader>
                                     <TableBody>
                                         {itens.map((item) => (
-                                            <TableRow key={item.Codproduto}>
-                                                <TableCell className="font-medium">{item.Codproduto}</TableCell>
-                                                <TableCell className="font-medium">{item.Isbn}</TableCell>
-                                                <TableCell className="font-medium">{item.Nomproduto}</TableCell>
-                                                <TableCell className="font-medium">{item.Quantidade}</TableCell>
-                                                <TableCell className="font-medium">{item.Qtdseparada}</TableCell>
-                                                <TableCell className="font-medium">{item.Localizacao}</TableCell>
+                                            <TableRow key={item.Codproduto} className='h-2 p-0 w-full'>
+                                                <TableCell className="font-medium w-[100px]">{item.Codproduto}</TableCell>
+                                                <TableCell className="font-medium w-[100px] ">{item.Isbn}</TableCell>
+                                                <TableCell className="font-medium min-w-[400px] w-[400px] ">{item.Nomproduto}</TableCell>
+                                                <TableCell className="font-medium w-[100px] ">{item.Quantidade}</TableCell>
+                                                <TableCell className="font-medium w-[100px] ">{item.Qtdseparada}</TableCell>
+                                                <TableCell className="font-medium w-[100px] ">{item.Localizacao}</TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>

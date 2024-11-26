@@ -1,10 +1,11 @@
 "use client"
 // import { DataTable } from "@/app/editora/data-table/data-table";
 import Search from "@/components/search";
-import { AutorDTO, columns } from "@/app/paginas/autor/columns";
+import { columns } from "@/app/paginas/autor/columns";
 import { useEffect, useState } from "react";
 import { fetchWrapper } from "@/app/api/fetch";
 import FilterAutor from "@/app/Combobox/Filters/FilterAutor";
+import { AutorDTO } from "@/app/paginas/autor/AutorDTO";
 
 interface Props {
   data: AutorDTO[]

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
     Pagination,
     PaginationContent,
@@ -14,45 +14,37 @@ import { useEffect, useState } from 'react';
 import { Page } from './ConferenciaDTO';
 
 interface Props {
-    page: Page
+    page: Page;
+    rota: string;
 }
 
-const Paginacao = ({ page }: Props) => {
-
+const Paginacao = ({ page, rota }: Props) => {
     const searchParams = useSearchParams()!;
     const router = useRouter();
     const nroPages = Math.ceil(page.RecordsCount! / page.PageSize);
     const [pg, setPg] = useState(searchParams.get('pg') || '1');
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams!);
 
     useEffect(() => {
-        params.set('pg', '1');
+        params.set('pg', pg);
         const query = params.size ? params.toString() : '';
-        router.push('/paginas/conferencia?' + query);
-      }, [nroPages]);
+        router.replace(rota + '?' + query);
+    }, [pg]);
 
     function EnviaDadosPaginacao(index: number) {
-
         if (index <= 0) {
             index = 1;
         }
-
         if (index > nroPages) {
             index = nroPages;
         }
-
-        if (pg) {
-            params.set('pg', index.toString());
-        }
-
         setPg(index.toString());
 
         const query = params.size ? params.toString() : '';
-        router.push('/paginas/conferencia?' + query);
+        router.push(rota + '?' + query);
     }
 
     return (
-
         <div className="container flex items-center justify-between max-h-full mx-auto mb-3">
             {page.RecordsCount! > 0 && nroPages > 0 ?
                 <Pagination>
@@ -76,8 +68,7 @@ const Paginacao = ({ page }: Props) => {
                 </Pagination>
                 : null}
         </div>
-    )
+    );
 };
 
 export default Paginacao;
-

@@ -1,6 +1,6 @@
 
 export interface Page {
-  RecordsCount?: number;
+  RecordsCount: number;
   PageIndex: number;
   PageSize: number;
   TotalPage?: number;

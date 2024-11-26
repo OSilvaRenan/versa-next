@@ -1,6 +1,6 @@
 export function apenasNumeros(str: string): boolean {
   return /^[0-9]+$/.test(str);
-}
+};
 
 export function formatarData(dataString: string): string {
   const data = new Date(dataString); // Cria um objeto Date a partir da string
@@ -9,7 +9,7 @@ export function formatarData(dataString: string): string {
   const ano = data.getFullYear(); // Obtém o ano
 
   return `${dia}/${mes}/${ano}`;
-}
+};
 
 export function truncateString(input: string, maxLength: number): string {
   if (input.length <= maxLength) {
@@ -17,4 +17,18 @@ export function truncateString(input: string, maxLength: number): string {
   }
   const truncated = input.substring(0, maxLength - 3) + "...";
   return truncated;
+};
+
+export function formatarDinheiro(valor: string | number, locale: string = 'pt-BR', currency: string = 'BRL'): string {
+  if(valor != null){
+    const valorString = valor.toString();
+    const valorNumerico = parseFloat(valorString.replace(/[^0-9.-]+/g, ''));
+    return valorNumerico.toLocaleString(locale, {
+      style: 'currency',
+      currency: currency
+    });
+  }else {
+    return ""
+  }
+  
 }

@@ -35,11 +35,11 @@ export const LstItensPedido = ({ params }: Props) => {
         <div className='py-5' >
             <Card className="min-h-[14rem]">
                 <CardTitle className=' container flex flex-row justify-between py-2 self-center space-x-2 h-8'>
-                    <span className='h-8 py-1'>Itens deste pedido</span>
+                    <span className='h-8 py-1'>Itens </span>
                     <Button className='w-[142px]'>Adicionar Item</Button>
                 </CardTitle>
                 <CardContent className='container py-2'>
-                    <div className="container mx-auto min-h-14 py-2">
+                    <div className=" mx-auto min-h-14 py-2">
                         {loading ? <>
                             <Skeleton className="h-[50px] w-[300] bg-slate-300 my-2 " />
                             <Skeleton className="h-[200px] w-[300] bg-slate-300 my-2" />

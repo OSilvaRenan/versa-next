@@ -8,12 +8,12 @@ interface PaginacaoProps {
   onPageChange: (page: number) => void;
 }
 
+
+
 const Paginacao: React.FC<PaginacaoProps> = ({ dadosPage, onPageChange }) => {
   const searchParams = useSearchParams()!;
   const router = useRouter();
   const params = new URLSearchParams(searchParams);
-
-
 
   function EnviaDadosPaginacao(index: number) {
     var totalPages = dadosPage.TotalPage != null ? dadosPage.TotalPage : 1

@@ -31,7 +31,8 @@ export default function EditoraTable({ data }: Props) {
   const pageSize = 10; // Número de itens por página
   const [filteredData, setFilteredData] = useState<EditoraDTO[]>(data);
   const [editoras, setEditoras] = useState<EditoraDTO[]>([]);
-  const [pageCount, setPageCount] = useState(0);
+  const [pageCount, setPageCount] = useState(Math.ceil(data.length / pageSize));
+
   const [codeditoragrupo, setCodeditoragrupo] = useState<string>('');
   const [dataCbo, setDataCbo] = useState<CboData>({
     Value: '',
@@ -42,24 +43,21 @@ export default function EditoraTable({ data }: Props) {
   const router = useRouter();
   const params = new URLSearchParams(searchParams);
 
-  
   useEffect(() => {
-    // Filtragem com base no filtro de valor
-    const filteredByFilterValue = filterValue
-      ? data.filter(editora =>
-        apenasNumeros(filterValue)
-          ? editora.Codeditora.toString().includes(filterValue)
-          : editora.Nomeditora.toUpperCase().includes(filterValue.toUpperCase())
-      )
-      : data;
+    let filteredByFilterValue = data;
 
-    // Filtragem adicional com base no código do grupo de editoras
-    const filteredByCodeditoragrupo = dataCbo.Value != '-1'
-      ? filteredByFilterValue.filter(editora =>
-        editora.Codeditoragrupo.toString() === dataCbo.Value
-      )
-      : filteredByFilterValue;
+    if (filterValue && filterValue !== '-1') {
+      filteredByFilterValue = data.filter(editora => apenasNumeros(filterValue) ?
+        editora.Codeditora.toString().includes(filterValue)
+        : editora.Nomeditora.toUpperCase().includes(filterValue.toUpperCase()));
+    }
 
+    let filteredByCodeditoragrupo = filteredByFilterValue;
+
+    if (dataCbo.Value && dataCbo.Value !== '-1') {
+      filteredByCodeditoragrupo = filteredByFilterValue.filter(editora => editora.Codeditoragrupo.toString() === dataCbo.Value);
+    }
+    
     setFilteredData(filteredByCodeditoragrupo);
     setPageCount(Math.ceil(filteredByCodeditoragrupo.length / pageSize));
   }, [filterValue, dataCbo.Value, data, pageSize]);
@@ -154,7 +152,7 @@ export default function EditoraTable({ data }: Props) {
                 </Table>
               }
             </div>
-            <Paginacao dadosPage={{PageIndex: pageIndex,  TotalPage: pageCount, PageSize: pageSize}}
+            <Paginacao dadosPage={{ PageIndex: pageIndex, TotalPage: pageCount, PageSize: pageSize, RecordsCount: 0 }}
               // currentPage={pageIndex}
               // totalPages={pageCount}
               onPageChange={goToPage}

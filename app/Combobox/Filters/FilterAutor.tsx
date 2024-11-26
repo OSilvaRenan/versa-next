@@ -1,4 +1,5 @@
 "use client"
+import { AutorDTO } from '@/app/paginas/autor/AutorDTO';
 import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -6,7 +7,6 @@ import { cn } from '@/lib/utils';
 import axios from 'axios';
 import { Check, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
-import { AutorDTO } from '../../paginas/autor/columns';
 
 interface AutorRequest {
     Nomautor: string;

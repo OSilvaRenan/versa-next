@@ -16,7 +16,7 @@ const Filters = () => {
     const searchParams = useSearchParams()!;
     const [datInicio, setDatInicio] = useState(searchParams.get('datInicio') || new Date(Date.now() - (7 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0]);
     const [datFim, setDatFim] = useState(searchParams.get('datFim') || new Date().toISOString().split('T')[0]);
-    const [tipoperiodo, setTipoperiodo] = useState(searchParams.get('tipoperiodo') || '0');
+    const [tipoperiodo, setTipoperiodo] = useState(searchParams.get('tipoperiodo') || '3');
     const [codsituacao, setCodsituacao] = useState(searchParams.get('codsituacao') || '');
     const [codoperacao, setCodoperacao] = useState(searchParams.get('codoperacao') || '');
     const [codcliente, setCodcliente] = useState(searchParams.get('codcliente') || '');
@@ -24,7 +24,7 @@ const Filters = () => {
 
     function Pesquisa() {
 
-        const params = new URLSearchParams(searchParams);
+        const params = new URLSearchParams(searchParams!);
 
         if (datInicio) params.set('datInicio', datInicio);
 
@@ -45,44 +45,43 @@ const Filters = () => {
 
     return (
         <>
-            <div className="flex flex-row justify-between  py-2 self-center space-x-2">
-                <span className="py-2 px-2"> Consulta Conferência </span>
+            <div className="flex flex-row justify-between py-2 self-center">
+                <span className="py-2"> Consulta Conferência </span>
                 <Button onClick={Pesquisa} type="button">Pesquisar</Button>
             </div>
-            <Card className="min-h-[170px]">
+            <Card className="min-h-[170px] max-w-full">
                 <CardContent>
-                    <div className="flex items-center justify-between max-h-full mx-auto ">
-                        <form className="flex flex-1 items-start flex-col">
-                            <div className="flex flex-1 items-center space-x-2 py-2">
-                                <div className='flex flex-col'>
+                    <div className="flex items-center justify-between max-h-full max-w-full mx-auto ">
+                        <form className="flex items-start flex-row flex-wrap max-w-full lg:justify-start justify-between">
+                            <div className="flex items-start flex-row flex-wrap max-w-full space-y-2 lg:justify-start justify-between sm:space-x-2">
+                                <div className='flex flex-col pt-2 '>
                                     <Label className="py-2" htmlFor="tipoperiodo">Tipo Período:</Label>
-                                    <FilterTipoPeriodo value={tipoperiodo} onSelect={setTipoperiodo} width={"100px"} />
+                                    <FilterTipoPeriodo value={tipoperiodo} onSelect={setTipoperiodo} width={"85px"} />
                                 </div>
-                                <div className='flex flex-col'>
-                                    <Label className="py-2" htmlFor="datInicio">Data Início:</Label>
+                                <div className='flex flex-col lg:pl-3'>
+                                    <Label className="py-2 px-2" htmlFor="datInicio">Data Início:</Label>
                                     <Input type="date" id="datInicio"
-                                        name="datInicio" className="h-8 w-[150px] lg:w-[150px]"
+                                        name="datInicio" className="h-8 lg:w-[155px] w-[160px] max-w-full"
                                         value={datInicio}
                                         onChange={(e) => setDatInicio(e.target.value)} />
                                 </div>
-                                <div className='flex flex-col'>
+                                <div className='flex flex-col lg:px-3'>
                                     <Label className="py-2" htmlFor="datFim">Data Fim:</Label>
                                     <Input type="date" id="datFim"
-                                        name="datFim" className="h-8 w-[150px] lg:w-[150px]"
+                                        name="datFim" className="h-8 lg:w-[150px] w-[160px] max-w-full"
                                         value={datFim}
                                         onChange={(e) => setDatFim(e.target.value)} />
                                 </div>
-                                <div className='flex flex-col self-end'>
-                                    <FilterSituacao classNameCombo="w-[175px] h-8" classNameLista="w-[250px] p-0" value={codsituacao == "" ? -1 : parseInt(codsituacao)} onSelect={setCodsituacao} />
+                                <div className='flex flex-col'>
+                                    <FilterSituacao classNameCombo="lg:w-[170px] w-[160px] h-8" classNameLista="lg:w-[250px] p-0 w-screen" value={codsituacao == "" ? -1 : parseInt(codsituacao)} onSelect={setCodsituacao} />
                                 </div>
-
                             </div>
-                            <div className="flex flex-1 items-center space-x-2 py-1">
-                                <div className='flex flex-col'>
-                                    <FilterOperacao classNameCombo="w-[360px] h-8" classNameLista="w-[360px] p-0" value={codoperacao} onSelect={setCodoperacao} />
+                            <div className="flex items-start lg:flex-row sm:flex-row sm:space-x-2 flex-column flex-wrap max-w-full lg:justify-start justify-between ">
+                                <div className='flex flex-col lg:pr-2 pt-2'>
+                                    <FilterOperacao classNameCombo="lg:w-[360px] w-[250px] max-w-screen-md h-8" classNameLista="lg:w-[360px] w-[300px] p-0 " value={codoperacao} onSelect={setCodoperacao} />
                                 </div>
-                                <div className='flex flex-col'>
-                                    <FilterCliente classNameCombo="w-[330px]  h-8" classNameLista="w-[330px] p-0" value={codcliente} onSelect={setCodcliente} />
+                                <div className='flex flex-col pt-2'>
+                                    <FilterCliente classNameCombo="lg:w-[340px] w-[250px] h-8" classNameLista="lg:w-[340px] w-[300px] p-0" value={codcliente} onSelect={setCodcliente} />
                                 </div>
                             </div>
                         </form>

@@ -41,6 +41,7 @@ export function DialogCadastroEditora({ codeditora }: Props) {
             }
         } else {
             setOpen(false);
+            window.location.reload();
         }
     };
 
@@ -63,7 +64,7 @@ export function DialogCadastroEditora({ codeditora }: Props) {
                     <DialogDescription>
                     </DialogDescription>
                 </DialogHeader>
-                <FormEditora item={editora} />
+                <FormEditora item={editora} onOpenChange={OpenDialog}/>
             </DialogContent>
         </Dialog>
     )

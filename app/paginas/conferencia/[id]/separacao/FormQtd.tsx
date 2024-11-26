@@ -5,7 +5,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import { separacaoResponse } from "./page";
+import { separacaoResponse } from "../../ConferenciaDTO";
 
 interface PropsForm {
     item: separacaoResponse;
@@ -21,7 +21,7 @@ export function FormQtd({ item, className, permiteCampos, setPermiteCampos, Prox
     const { toast } = useToast();
     const [localizacao, setLocalizacao] = useState('');
     const [isbn, setIsbn] = useState('');
-    const [qtdLote, setQtdLote] = useState('1');
+    const [qtdLote, setQtdLote] = useState<number>(1);
     const [habilitaCampo, setHabilitaCampo] = useState(false);
 
     const HabilitaQtdLote = useCallback(() => {
@@ -60,30 +60,42 @@ export function FormQtd({ item, className, permiteCampos, setPermiteCampos, Prox
         if (permiteCampos && item) {
             if (qtdSeparada < item.Quantidade) {
                 if (isbn != '') {
-                    let qtdSeparar = qtdLote == '' || qtdLote == '0' ? qtdSeparada + 1 : qtdSeparada + parseInt(qtdLote);
-                    try {
-                        const request = {
-                            Codconferencia: item.Codconferencia,
-                            localizacao: localizacao ? localizacao : item.Localizacao,
-                            Isbn: isbn,
-                            QtdSeparada: qtdSeparar
-                        };
-                        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}api/conferencia/atualizaqtdseparada`, request).then(response => {
 
-                            setIsbn('');
-                            SelecionaCampo();
-                            setQtdSeparada(qtdSeparar);
-                            setQtdLote('1');
-                            if (qtdSeparar == item.Quantidade) {
-                                ProximoItem();
-                            }
-                        });
-                    } catch (error) {
+                    let qtdSeparar = qtdLote == 0 ? qtdSeparada + 1 : qtdSeparada + qtdLote;
+
+                    if (qtdSeparar <= item.Quantidade) {
+                        try {
+                            const request = {
+                                Codconferencia: item.Codconferencia,
+                                localizacao: localizacao ? localizacao : item.Localizacao,
+                                Isbn: isbn,
+                                QtdSeparada: qtdSeparar
+                            };
+                            await axios.post(`${process.env.NEXT_PUBLIC_API_URL}api/conferencia/atualizaqtdseparada`, request).then(response => {
+
+                                setIsbn('');
+                                SelecionaCampo();
+                                setQtdSeparada(qtdSeparar);
+                                setQtdLote(1);
+                                setHabilitaCampo(false);
+                                SelecionaCampo();
+                                if (qtdSeparar == item.Quantidade) {
+                                    ProximoItem();
+                                }
+                            });
+                        } catch (error) {
+                            toast({
+                                variant: "default",
+                                description: "Erro ao atualizar a quantidade separada: " + error,
+                            })
+                        }
+                    } else {
                         toast({
-                            variant: "default",
-                            description: "Erro ao atualizar a quantidade separada: " + error,
+                            variant: "destructive",
+                            description: "Quantidade em lote não pode ser maior que a quantidade solicitada!",
                         })
                     }
+
                 } else {
                     toast({
                         variant: "destructive",
@@ -106,7 +118,7 @@ export function FormQtd({ item, className, permiteCampos, setPermiteCampos, Prox
                 })
             }
         }
-    }, [permiteCampos, item, localizacao, isbn, qtdSeparada]);
+    }, [permiteCampos, item, localizacao, isbn, qtdSeparada, qtdLote]);
 
     return (
         <form className={cn("grid items-start gap-4", className)} >
@@ -136,9 +148,14 @@ export function FormQtd({ item, className, permiteCampos, setPermiteCampos, Prox
                                 <Input id="qtdseparada" value={qtdSeparada} type="number" readOnly={true} className="bg-gray-200" />
                             </div>
                             <div className="grid pr-2">
-                                <Input id="qtdlote" type="number" className={!habilitaCampo ? "bg-gray-200" : ""}
-                                    value={qtdLote} onChange={(e) => setQtdLote(e.target.value)}
-                                    readOnly={habilitaCampo ? false : true} onKeyDown={DesabilitaQtdLote} />
+                                <Input id="qtdlote" type="number"
+                                    min={1}
+                                    max={item.Quantidade - qtdSeparada}
+                                    className={!habilitaCampo ? "bg-gray-200" : ""}
+                                    readOnly={habilitaCampo ? false : true}
+                                    onKeyDown={DesabilitaQtdLote}
+                                    value={qtdLote} onChange={(e) => setQtdLote(parseInt(e.target.value))}
+                                />
                             </div>
                             <div className="grid">
                                 <Button className="grid" type="button" onClick={HabilitaQtdLote}>Lote</Button>

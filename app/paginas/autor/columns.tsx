@@ -13,16 +13,9 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Page } from "../conferencia/ConferenciaDTO"
+import { AutorDTO } from "./AutorDTO"
 
-export type AutorDTO = {
-  Codautor: number,
-  Nomautor: string
-}
 
-export type PaginedList<T> = {
-  Dados: T,
-  Page: Page
-}
 
 export const columns: ColumnDef<AutorDTO>[] = [
   {

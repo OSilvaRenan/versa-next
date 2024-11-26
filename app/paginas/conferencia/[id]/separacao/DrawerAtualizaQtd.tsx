@@ -22,19 +22,26 @@ import * as React from "react"
 import { useCallback, useEffect, useState } from "react"
 import { FormQtd } from "./FormQtd"
 import { separacaoResponse } from "../../ConferenciaDTO"
+import axios from "axios"
+import { getServerSession } from 'next-auth'
+import { useSession } from "next-auth/react"
 
 interface Props {
     itens: separacaoResponse[];
     className?: React.ComponentProps<"form">;
     setAtualizaLista: (value: boolean) => void;
     atualizaLista: boolean;
+    situacaoConferencia: string;
+    codconferencia: number;
+    disabled : boolean;
 }
 
-export function DrawerAtualizaQtd({ itens, setAtualizaLista, atualizaLista }: Props) {
+export function DrawerAtualizaQtd({ itens, setAtualizaLista, atualizaLista, situacaoConferencia, codconferencia, disabled }: Props) {
 
     const [open, setOpen] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [permiteCampos, setPermiteCampos] = useState<boolean>(false);
+    const { data } = useSession();
 
     const encontrarPrimeiroItemValido = useCallback(() => {
         return itens.find(item => item.Qtdseparada < item.Quantidade)!;
@@ -45,6 +52,18 @@ export function DrawerAtualizaQtd({ itens, setAtualizaLista, atualizaLista }: Pr
     const [index, setIndex] = useState(item ? itens.indexOf(item) : 0);
     const [qtdSeparada, setQtdSeparada] = useState<number>(item ? item.Qtdseparada : 0);
 
+    async function iniciaSeparacao() {
+        try {
+            var request = {
+                Codconferencia: codconferencia,
+                Codusuario: data!.user?.Codusuario
+            }
+            await axios.post(`${process.env.NEXT_PUBLIC_API_URL}api/conferencia/iniciaonda`, request);
+        } catch (error) {
+            console.error('Erro ao iniciar separação:', error);
+        }
+    }
+
     function OpenDialog() {
         if (open) {
             setItem(encontrarPrimeiroItemValido);
@@ -52,6 +71,9 @@ export function DrawerAtualizaQtd({ itens, setAtualizaLista, atualizaLista }: Pr
 
         } else {
             setPermiteCampos(false);
+            if (situacaoConferencia == "Pendente") {
+                iniciaSeparacao();
+            }
         }
         setAtualizaLista(!atualizaLista);
         setOpen(open => !open);
@@ -59,6 +81,23 @@ export function DrawerAtualizaQtd({ itens, setAtualizaLista, atualizaLista }: Pr
 
     function abrirAvisoUltimoItem() {
         setOpenAlert(open => !open);
+    };
+
+    async function FinalizarSeparacao() {
+        if (situacaoConferencia == "Em Separação") {
+            try {
+                var request = {
+                    Codconferencia: item?.Codconferencia,
+                    Codusuario: 1
+                }
+                await axios.post(`${process.env.NEXT_PUBLIC_API_URL}api/conferencia/finalizaonda`, request).then(() => {
+                    OpenDialog();
+                });
+            } catch (error) {
+                console.error('Erro ao finalizar separação', error);
+            }
+        }
+
     };
 
     useEffect(() => {
@@ -89,17 +128,16 @@ export function DrawerAtualizaQtd({ itens, setAtualizaLista, atualizaLista }: Pr
 
     return (
         <>
-
             <Dialog open={open} onOpenChange={OpenDialog} modal={true}>
                 <DialogTrigger asChild>
-                    <Button >Inicia Separação</Button>
+                    <Button   disabled={disabled}>Inicia Separação </Button>
                 </DialogTrigger>
                 {item ?
                     <DialogContent className="sm:max-w-[425px]" onPointerDownOutside={event => event.preventDefault()}>
                         <DialogHeader>
                             <DialogTitle>Separação {item.Codconferencia}</DialogTitle>
                             <DialogDescription>
-                                {item.Localizacao ? <span> <b> Localização: </b>{item.Localizacao}</span> : "Esse item não possuilocalização cadastrada."}<br />
+                                {item.Localizacao ? <span> <b> Localização: </b>{item.Localizacao}</span> : "Esse item não possui localização cadastrada."}<br />
                                 {permiteCampos ? <>
                                     <span><b>Produto: </b> {item.Isbn ? item.Isbn : ""} - {item.Nomproduto ? item.Nomproduto : ""} </span><br />
                                     {item.Quantidade ? <span> <b>Qtde Solicitada: </b>{item.Quantidade}</span> : ""}
@@ -126,7 +164,7 @@ export function DrawerAtualizaQtd({ itens, setAtualizaLista, atualizaLista }: Pr
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Não</AlertDialogCancel>
-                        <AlertDialogAction onClick={OpenDialog}>Sim</AlertDialogAction>
+                        <AlertDialogAction onClick={FinalizarSeparacao}>Sim</AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>

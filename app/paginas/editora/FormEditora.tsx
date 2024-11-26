@@ -4,86 +4,120 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import ListaEditorasGrupo from "../../Combobox/ListaEditorasGrupo";
 import { EditoraDTO } from "./EditoraDTO";
-import { forwardRef, useState } from "react";
+import { useState, useEffect } from "react";
 import { CboData } from "@/app/Combobox/CboEstatica";
 import axios from "axios";
-import { useForm, UseFormRegister } from 'react-hook-form';
-import { Select } from "@/app/Combobox/NewCboEstatica";
-// import { yupResolver } from '@hookform/resolvers/yup';
-// import * as yup from 'yup';
+import { useForm } from "react-hook-form";
+import { toast } from "@/components/ui/use-toast"; // Importando o toast
 
 interface PropsForm {
     item?: EditoraDTO | null;
     className?: React.ComponentProps<"form">;
+    onOpenChange: () => void;
 }
 
 export interface formEditora {
     Nomeditora: string;
     Editoragrupo: CboData;
-    // Age: number;
 }
 
-export function FormEditora({ item, className }: PropsForm) {
-
-    // const { register, handleSubmit, formState: { errors } } = useForm({
-    //     resolver: yupResolver(schema),
-    // });
-
-    const { register, handleSubmit, formState: { errors } } = useForm<formEditora>(
-        {
-            defaultValues: {
-                Nomeditora: item?.Nomeditora,
-                Editoragrupo: {
-                    Description: item?.Nomeditora.trimEnd(),
-                    Value: item?.Codeditoragrupo.toString()
-                }
+export function FormEditora({ item, className, onOpenChange }: PropsForm) {
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<formEditora>({
+        defaultValues: {
+            Nomeditora: item?.Nomeditora || "",
+            Editoragrupo: {
+                Description: item?.Nomeditoragrupo?.trimEnd() || "",
+                Value: item?.Codeditoragrupo?.toString() || "-1"
             }
         }
-    );
-
-    const PostEditora = async (novaEditora: any) => {
-        novaEditora.Codeditoragrupo = itemSelecionado.Value != "-1" ? parseInt(itemSelecionado.Value) : 0;
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/editora`, novaEditora);
-    }
-
-    const onSubmit = (data: any) => {
-        PostEditora(data);
-    };
-
-    // const [nomeditora, setnomeditora] = useState<string>(item?.Nomeditora.trim() ?? "")
-
-    const [itemSelecionado, setItemSelecionado] = useState<CboData>({
-        Value: item?.Codeditoragrupo != null && item?.Codeditoragrupo > 0 ? item?.Codeditoragrupo.toString() : '-1',
-        Description: item?.Nomeditoragrupo ?? ""
     });
 
-    // const [data, setData] = useState<CboData[]>([]);
+    const [itemSelecionado, setItemSelecionado] = useState<CboData>({
+        Value: item?.Codeditoragrupo?.toString() || "-1",
+        Description: item?.Nomeditoragrupo || ""
+    });
 
-    // const carregarOpcoes = async () => {
-    //     try {
-    //         await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/produto/editoragrupo`).then(response => {
+    const [data, setData] = useState<CboData[]>([]);
 
-    //             const dadosTransformados: CboData[] = response.data.Dados.map((item: EditoraDTO) => ({
-    //                 Value: item.Codeditoragrupo,
-    //                 Description: item.Nomeditoragrupo
-    //             }));
+    const carregarOpcoes = async () => {
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/produto/editoragrupo`);
+            const dadosTransformados: CboData[] = response.data.Dados.map((item: EditoraDTO) => ({
+                Value: item.Codeditoragrupo.toString(),
+                Description: item.Nomeditoragrupo
+            }));
+            setData(dadosTransformados);
+        } catch (erro) {
+            console.error("Erro ao carregar opções:", erro);
+        }
+    };
 
-    //             setData(dadosTransformados);
-    //         });
-    //     } catch (erro) {
-    //         console.error('Erro ao carregar opções:', erro);
-    //     } finally {
-    //     }
-    // };
+    useEffect(() => {
+        carregarOpcoes();
+        if (item) {
+            reset({
+                Nomeditora: item?.Nomeditora || "",
+                Editoragrupo: {
+                    Description: item?.Nomeditoragrupo?.trimEnd() || "",
+                    Value: item?.Codeditoragrupo?.toString() || "-1"
+                }
+            });
+        }
+    }, [item, reset]);
+
+    const PostEditora = async (novaEditora: formEditora) => {
+        try {
+            const request = {
+                Codeditora: item?.Codeditora ?? 0,
+                Nomeditora: novaEditora.Nomeditora,
+                Codeditoragrupo: itemSelecionado.Value != '-1' ? Number(itemSelecionado.Value) : 0,
+            };
+            if (item?.Codeditora != null) {
+                await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/editora/${item?.Codeditora}`, request);
+                toast({
+                    className: "bg-green-300",
+                    variant: "default",
+                    description: "Editora atualizada.",
+                })
+            } else {
+                await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/editora`, request);
+                toast({
+                    className: "bg-green-300",
+                    variant: "default",
+                    description: "Uma nova editora foi registrada.",
+                })
+
+            }
+
+            onOpenChange();
+
+        } catch (error) {
+            if (item?.Codeditora != null) {
+                toast({
+                    variant: "destructive",
+                    description: "Ocorreu um erro ao atualizar a editora.",
+                })
+            }
+            else {
+                toast({
+                    variant: "destructive",
+                    description: "Ocorreu um erro ao registrar a editora.",
+                })
+             }
+           
+        }
+    };
+
+    const onSubmit = (data: formEditora) => {
+        PostEditora(data);
+    };
 
     return (
         <form className={cn("grid items-start gap-6", className)} onSubmit={handleSubmit(onSubmit)}>
             <div className="grid gap-2">
                 <Label htmlFor="nomeditora">Nome:</Label>
-                <Input type="text"
-                    // id="formnomeditora"
-                    // value={nomeditora}
-                    // onChange={(e) => setnomeditora(e.target.value)}
+                <Input
+                    type="text"
                     {...register("Nomeditora", { required: true })}
                 />
                 {errors.Nomeditora && <span className="text-red-500 text-sm pl-1">Esse campo é obrigatório</span>}
@@ -91,24 +125,14 @@ export function FormEditora({ item, className }: PropsForm) {
 
             <div className="grid grid-cols-2 gap-2">
                 <ListaEditorasGrupo
-                    classNameCombo="w-[170px] h-8" classNameLista="w-[250px] p-0"
+                    classNameCombo="w-[170px] h-8"
+                    classNameLista="w-[250px] p-0"
                     value={itemSelecionado}
                     onChange={setItemSelecionado}
                     id="Codeditoragrupo"
-                //   {...register("Editoragrupo")}
                 />
             </div>
-            {/* <Select label="Editoragrupo" {...register("Editoragrupo")} 
-                  itemListaSelecionado={itemSelecionado}
-                  carregarOpcoes={carregarOpcoes}
-                //   setItemListaSelecionado={onChange}
-                  data={data}
-                    setData={setData}
-                //   mostrarValue={true}
-                  
-                  /> */}
-
-            <Button>Salvar</Button>
-        </form >
-    )
+            <Button type="submit">Salvar</Button>
+        </form>
+    );
 }

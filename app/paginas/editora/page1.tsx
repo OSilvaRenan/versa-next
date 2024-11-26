@@ -7,7 +7,8 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Pencil } from "lucide-react";
 import Link from "next/link";
 import Paginacao from "../conferencia/paginacao";
-import { AutorDTO, PaginedList } from "./AutorDTO";
+import { EditoraDTO } from "./EditoraDTO";
+import { PaginedList } from "../autor/AutorDTO";
 import Filters from "./filters";
 
 interface searchQuery {
@@ -18,7 +19,7 @@ interface Props {
     searchParams: searchQuery
 };
 
-export default async function AutorPage({ searchParams }: Props) {
+export default async function EditoraPage({ searchParams }: Props) {
     const fetchData = async () => {
         if (searchParams.search != undefined) {
 
@@ -27,7 +28,7 @@ export default async function AutorPage({ searchParams }: Props) {
             }
 
 
-            const data = await fetchWrapper<PaginedList<AutorDTO[]>>('api/produto/autor/pesquisa', {
+            const data = await fetchWrapper<PaginedList<EditoraDTO[]>>('api/produto/editora', {
                 method: 'POST',
                 cache: 'no-cache',
                 headers: {
@@ -47,7 +48,7 @@ export default async function AutorPage({ searchParams }: Props) {
 
     return (
         <div className="mx-5">
-            <Filters />
+            <Filters data={dados!} /> 
             <div className='my-5' >
                 <Card className="min-h-[35rem]">
                     <CardContent className='py-2'>
@@ -58,14 +59,16 @@ export default async function AutorPage({ searchParams }: Props) {
                                         <TableRow className="font-medium w-[5px] max-w-[5px] min-w-[5px]">
                                             <TableHead>Código</TableHead>
                                             <TableHead>Nome</TableHead>
+                                            <TableHead>Editora Grupo</TableHead>
                                             <TableHead>Ações</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
-                                        {dados?.map((autor) => (
-                                            <TableRow key={autor.Codautor} className="h-2 p-0 w-full">
-                                                <TableCell className="h-2 pl-4 w-[50px]" >{autor.Codautor}</TableCell>
-                                                <TableCell className="w-[600px] ">{autor.Nomautor}</TableCell>
+                                        {dados?.map((editora) => (
+                                            <TableRow key={editora.Codeditora} className="h-2 p-0 w-full">
+                                                <TableCell className="h-2 pl-4 w-[50px]" >{editora.Codeditora}</TableCell>
+                                                <TableCell className="w-[600px] ">{editora.Nomeditora}</TableCell>
+                                                <TableCell className="w-[600px] ">{editora.Nomeditoragrupo}</TableCell>
 
                                                 <TableCell className="lg:hidden " >
                                                     <DropdownMenu>
@@ -94,7 +97,7 @@ export default async function AutorPage({ searchParams }: Props) {
                                     </TableBody>
                                 </Table>
                                 :
-                                <span>Nenhum autor encontrado</span>
+                                <span>Nenhuma Editora encontrada</span>
                             }
                         </div>
                         {page != undefined ?
