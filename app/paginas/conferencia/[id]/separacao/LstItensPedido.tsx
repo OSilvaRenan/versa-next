@@ -1,10 +1,7 @@
 import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import axios from 'axios'
-import { useEffect, useState } from 'react'
-import { DrawerAtualizaQtd } from './DrawerAtualizaQtd'
 import { Skeleton } from '@/components/ui/skeleton'
-import { separacaoResponse } from '../../ConferenciaDTO'
+import { separacaoResponse } from '@/DTO/SeparacaoDTO'
 
 interface Props {
     itens: separacaoResponse[]

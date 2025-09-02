@@ -1,10 +1,4 @@
-
-export interface Page {
-  RecordsCount: number;
-  PageIndex: number;
-  PageSize: number;
-  TotalPage?: number;
-}
+import { Page } from "./PageDTO";
 
 export interface ConferenciaRequestDTO {
   Codconferencia?: number;
@@ -31,6 +25,7 @@ export interface ConferenciaResponseDTO {
   Codempresacli: number;
   Codoperacao: number;
   Nomoperacao: string;
+  Nomusuario: string;
   Codtransportadora: number;
   Nomtransportadora: string;
   Observ: string;
@@ -50,9 +45,24 @@ export interface ConferenciaResponseDTO {
   Datnotafinal: string;
   Indnota: number;
   Nomcliente: string;
+  Seqconferenciacaixa: string;
 }
 
-export interface conferenciaResponse {
+export interface conferenciaItensResponseDTO {
+  Seqconferenciaitem: number;
+  Codconferencia: number;
+  Codempresa: number;
+  Codproduto: number;
+  Nomproduto: string;
+  Quantidade: number;
+  Qtdconferida: number;
+  Nrocaixa: string;
+  Isbn: string;
+  Peso: number;
+  Localizacao: string;
+}
+
+export interface conferenciaProdutoResponseDTO {
   Codconferencia: number;
   Codempresa: number;
   Codproduto: number;
@@ -61,16 +71,51 @@ export interface conferenciaResponse {
   Qtdconferida: number;
   Localizacao: string;
   Isbn: string;
+  Nrocaixa: string;
+  Seqconferenciaitem: number;
+  Peso: number;
 }
 
-export interface separacaoResponse {
-  Codconferencia: number;
+export interface conferenciaCaixasResponseDTO {
+  Seqconferenciacaixa: number;
   Codempresa: number;
-  Codproduto: number;
-  Nomproduto: string;
-  Quantidade: number;
-  Qtdconferida: number;
-  Localizacao: string;
-  Isbn: string;
-  Qtdseparada: number;
+  Codconferencia: number;
+  Nrocaixa: number;
+  Pesobruto: number;
+  Codembalagem: number;
+  Intetiqueta?: number;
+  Indetiqueta?: number;
+  Indetiquetaentrega?: number;
+  Dscembalagem: string;
 }
+
+export interface CaixaDTO {
+  Nrocaixa: number;
+  Codembalagem: number;
+  Dscembalagem: string;
+  Seqconferenciacaixa: number;
+  PesoBruto: number;
+  PesoLiquido: number;
+}
+
+export interface RegistraPesoRequest {
+  Pesobruto: string;
+  PesoLiquido: number;
+}
+
+export interface RegistraLeituraRequest {
+  Codempresa: number;
+  Nrocaixa: number;
+  Codembalagem: number;
+  Codproduto: number;
+  Quantidade: number;
+}
+
+export interface RegistraCaixaRequest {
+  Codempresa: number;
+  Nrocaixa: number;
+  Codembalagem: number;
+};
+
+
+

@@ -7,8 +7,9 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Pencil } from "lucide-react";
 import Link from "next/link";
 import Paginacao from "../conferencia/paginacao";
-import { AutorDTO, PaginedList } from "./AutorDTO";
+import { AutorDTO } from "../../../DTO/AutorDTO";
 import Filters from "./filters";
+import { PaginedList } from "@/DTO/PageDTO";
 
 interface searchQuery {
     search: string;
@@ -27,7 +28,7 @@ export default async function AutorPage({ searchParams }: Props) {
             }
 
 
-            const data = await fetchWrapper<PaginedList<AutorDTO[]>>('api/produto/autor/pesquisa', {
+            const data = await fetchWrapper<PaginedList<AutorDTO>>('api/produto/autor/pesquisa', {
                 method: 'POST',
                 cache: 'no-cache',
                 headers: {

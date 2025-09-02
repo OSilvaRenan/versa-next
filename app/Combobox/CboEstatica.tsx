@@ -94,7 +94,7 @@ export const CboEstatica = ({classNameCombo, classNameLista, label, mostrarValue
             {mostrarValue ??
                     <div className="grid gap-2 self-end px-2">
                         <Input type="text" 
-                           value={itemListaSelecionado && itemListaSelecionado.Value !== '-1' ? itemListaSelecionado.Value : ''}
+                           value={itemListaSelecionado && itemListaSelecionado.Value !== '-1' ? itemListaSelecionado.Value : '-1'}
                             className="w-[50px] h-8 py-4"
                             id="formcodeditoragrupo"
                         

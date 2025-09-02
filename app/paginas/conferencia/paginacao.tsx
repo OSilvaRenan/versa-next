@@ -9,9 +9,9 @@ import {
     PaginationPrevious,
     PaginationStart
 } from "@/components/ui/pagination";
+import { Page } from "@/DTO/PageDTO";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from 'react';
-import { Page } from './ConferenciaDTO';
 
 interface Props {
     page: Page;

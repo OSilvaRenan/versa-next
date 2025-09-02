@@ -6,42 +6,72 @@ import { DrawerAtualizaQtd } from './DrawerAtualizaQtd';
 import { ActionsSeparacao } from '@/components/ActionsSeparacao';
 import { FiltersItensPedido } from '../FiltersItensPedido';
 import { useEffect, useState } from 'react';
-import { ConferenciaResponseDTO, separacaoResponse } from '../../ConferenciaDTO';
+import { ConferenciaResponseDTO } from '../../../../../DTO/ConferenciaDTO';
 import axios from 'axios';
 import { ActionsSeparacaoMobile } from '@/components/ActionsSeparacaoMobile';
+import { ListaProdutosSeparacao } from '@/dbs/SeparacaoDb';
+import { ListaDadosConferencia } from '@/dbs/ConferenciaDb';
+import { CancelarSeparacaoRequest, separacaoResponse } from '@/DTO/SeparacaoDTO';
+import { useConferencia } from '../ConferenciaContext';
 
 interface Props {
     params: { id: string };
 }
 
-export default function Page({ params }: Props) {
+export default function SeparacaoPage({ params }: Props) {
 
-    const [conferencia, setConferencia] = useState<ConferenciaResponseDTO>();
-    const [itensSeparacao, setItensSeparacao] = useState<separacaoResponse[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
+    // const [conferencia, setConferencia] = useState<ConferenciaResponseDTO>();
+    // const [loading, setLoading] = useState<boolean>(true);
     const [atualizaLista, setAtualizaLista] = useState<boolean>(true);
+    // const [codembalagem, setCodembalagem] = useState("0");
 
-    const buscaDadosConferencia = async () => {
-        setLoading(true);
-        await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/conferencia/${params.id}`).then(response => {
-            setConferencia(response.data);
-            setLoading(false);
-        });
-    };
+        const {
+            SetDadosConferencia,
+            SetDadosSeparacao,
+            conferencia,
+            itensSeparacao,
+            loading
+        } = useConferencia();
 
-    const buscaItensConferencia = async () => {
-        setLoading(true);
-        await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/conferencia/${params.id}/separacao/produtos`).then(response => {
-            setItensSeparacao(response.data);
-            setLoading(false);
-        });
-    };
+        
+     const buscaDadosConferencia = async () => {
+            const dadosConferencia: ConferenciaResponseDTO = await ListaDadosConferencia(params.id);
+    
+            if (dadosConferencia) {
+                SetDadosConferencia(dadosConferencia);
+            }
+        }
+    
+        const buscaItensConferencia = async () => {
+            const itensSeparacao: separacaoResponse[] = await ListaProdutosSeparacao(params.id);
+    
+            if (itensSeparacao) {
+                SetDadosSeparacao(itensSeparacao);
+            }
+        }
+        
+    // const buscaDadosConferencia = async () => {
+    //     setLoading(true);
+    //     await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/conferencia/${params.id}`).then(response => {
+    //         setConferencia(response.data);
+    //         setLoading(false);
+    //     });
+    // };
+
+    // const buscaItensConferencia = async () => {
+    //     setLoading(true);
+    //     await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/conferencia/${params.id}/separacao/produtos`).then(response => {
+    //         setItensSeparacao(response.data);
+    //         setLoading(false);
+    //     });
+    // };
 
     async function CancelarSeparacao() {
         try {
-            var request = {
-                Codconferencia: conferencia?.Codconferencia,
+            var request: CancelarSeparacaoRequest = {
+                Codconferencia: conferencia!.Codconferencia,
             }
+
             await axios.post(`${process.env.NEXT_PUBLIC_API_URL}api/conferencia/cancelaonda`, request);
         } catch (error) {
             console.error('Erro ao iniciar separação:', error);
@@ -78,7 +108,9 @@ export default function Page({ params }: Props) {
                 <ActionsSeparacaoMobile disabled={conferencia?.Indseparacao == 9 ? false : true} CancelarSeparacao={CancelarSeparacao}/>
                 </div>
             </div>
-            <FiltersItensPedido params={params} conferencia={conferencia} />
+            <FiltersItensPedido params={params}
+            //  conferencia={conferencia} codembalagem={codembalagem} setCodembalagem={setCodembalagem}
+             />
             <LstItensPedido itens={itensSeparacao} loading={loading}
             />
         </div>

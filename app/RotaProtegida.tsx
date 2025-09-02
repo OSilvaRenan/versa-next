@@ -1,18 +1,22 @@
 "use client"
-import { useEffect } from 'react';
 import { getSession } from 'next-auth/react';
-import { redirect, usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
 
-function RotaProtegida({ children }: any) {
+interface Props {
+    children: React.ReactNode;
+}
+
+function RotaProtegida({ children }: Props) {
     const router = useRouter();
     const pathname = usePathname();
 
     useEffect(() => {
         const checkAuth = async () => {
             const session = await getSession();
-            if (!session && pathname !== '/login') {
+            if (!session && pathname !== '/paginas') {
                 // Redireciona para a página de login apenas se não estiver já nela
-                router.push('/login');
+                router.push('/paginas');
             }
         };
 

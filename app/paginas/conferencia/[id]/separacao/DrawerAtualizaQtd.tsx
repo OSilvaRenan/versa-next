@@ -21,10 +21,12 @@ import { DialogDescription } from "@radix-ui/react-dialog"
 import * as React from "react"
 import { useCallback, useEffect, useState } from "react"
 import { FormQtd } from "./FormQtd"
-import { separacaoResponse } from "../../ConferenciaDTO"
 import axios from "axios"
 import { getServerSession } from 'next-auth'
 import { useSession } from "next-auth/react"
+import { SeparacaoRequest, separacaoResponse } from "@/DTO/SeparacaoDTO"
+import { FinalizarSeparacao, IniciarSeparacao } from "@/dbs/SeparacaoDb"
+import { useConferencia } from "../ConferenciaContext"
 
 interface Props {
     itens: separacaoResponse[];
@@ -33,7 +35,7 @@ interface Props {
     atualizaLista: boolean;
     situacaoConferencia: string;
     codconferencia: number;
-    disabled : boolean;
+    disabled: boolean;
 }
 
 export function DrawerAtualizaQtd({ itens, setAtualizaLista, atualizaLista, situacaoConferencia, codconferencia, disabled }: Props) {
@@ -43,36 +45,42 @@ export function DrawerAtualizaQtd({ itens, setAtualizaLista, atualizaLista, situ
     const [permiteCampos, setPermiteCampos] = useState<boolean>(false);
     const { data } = useSession();
 
-    const encontrarPrimeiroItemValido = useCallback(() => {
-        return itens.find(item => item.Qtdseparada < item.Quantidade)!;
-    }, [itens, permiteCampos]);
-
     // Inicializa o estado do item com o primeiro item válido
     const [item, setItem] = useState<separacaoResponse | undefined>();
     const [index, setIndex] = useState(item ? itens.indexOf(item) : 0);
     const [qtdSeparada, setQtdSeparada] = useState<number>(item ? item.Qtdseparada : 0);
 
-    async function iniciaSeparacao() {
-        try {
-            var request = {
-                Codconferencia: codconferencia,
-                Codusuario: data!.user?.Codusuario
-            }
-            await axios.post(`${process.env.NEXT_PUBLIC_API_URL}api/conferencia/iniciaonda`, request);
-        } catch (error) {
-            console.error('Erro ao iniciar separação:', error);
-        }
-    }
+    const {
+        AtualizaItemSeparacao,
+        itemSeparacao
+    } = useConferencia();
 
-    function OpenDialog() {
+    // async function iniciaSeparacao() {
+    //     try {
+    //         var request = {
+    //             Codconferencia: codconferencia,
+    //             Codusuario: data!.user?.Codusuario
+    //         }
+    //         await axios.post(`${process.env.NEXT_PUBLIC_API_URL}api/conferencia/iniciaonda`, request);
+    //     } catch (error) {
+    //         console.error('Erro ao iniciar separação:', error);
+    //     }
+    // }
+
+    async function OpenDialog() {
         if (open) {
-            setItem(encontrarPrimeiroItemValido);
+            AtualizaItemSeparacao();
             setIndex(0);
 
         } else {
             setPermiteCampos(false);
             if (situacaoConferencia == "Pendente") {
-                iniciaSeparacao();
+                var request: SeparacaoRequest= {
+                                Codconferencia: codconferencia,
+                                Codusuario: data!.user!.Codusuario
+                            }
+
+                await IniciarSeparacao(request);
             }
         }
         setAtualizaLista(!atualizaLista);
@@ -83,16 +91,18 @@ export function DrawerAtualizaQtd({ itens, setAtualizaLista, atualizaLista, situ
         setOpenAlert(open => !open);
     };
 
-    async function FinalizarSeparacao() {
+    async function FinalizaSeparacao() {
         if (situacaoConferencia == "Em Separação") {
             try {
-                var request = {
-                    Codconferencia: item?.Codconferencia,
+                var request: SeparacaoRequest = {
+                    Codconferencia: item!.Codconferencia,
                     Codusuario: 1
                 }
-                await axios.post(`${process.env.NEXT_PUBLIC_API_URL}api/conferencia/finalizaonda`, request).then(() => {
-                    OpenDialog();
-                });
+                await FinalizarSeparacao(request);
+                OpenDialog();
+
+                // await axios.post(`${process.env.NEXT_PUBLIC_API_URL}api/conferencia/finalizaonda`, request).then(() => {
+                // });
             } catch (error) {
                 console.error('Erro ao finalizar separação', error);
             }
@@ -101,7 +111,8 @@ export function DrawerAtualizaQtd({ itens, setAtualizaLista, atualizaLista, situ
     };
 
     useEffect(() => {
-        let itemAtual = encontrarPrimeiroItemValido();
+        AtualizaItemSeparacao();
+        let itemAtual = itemSeparacao;
         if (itemAtual !== undefined) {
             setItem(itemAtual);
             setQtdSeparada(itemAtual.Qtdseparada)
@@ -130,7 +141,7 @@ export function DrawerAtualizaQtd({ itens, setAtualizaLista, atualizaLista, situ
         <>
             <Dialog open={open} onOpenChange={OpenDialog} modal={true}>
                 <DialogTrigger asChild>
-                    <Button   disabled={disabled}>Inicia Separação </Button>
+                    <Button disabled={disabled}>Inicia Separação </Button>
                 </DialogTrigger>
                 {item ?
                     <DialogContent className="sm:max-w-[425px]" onPointerDownOutside={event => event.preventDefault()}>
@@ -164,12 +175,11 @@ export function DrawerAtualizaQtd({ itens, setAtualizaLista, atualizaLista, situ
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Não</AlertDialogCancel>
-                        <AlertDialogAction onClick={FinalizarSeparacao}>Sim</AlertDialogAction>
+                        <AlertDialogAction onClick={FinalizaSeparacao}>Sim</AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
         </>
     )
 }
-
 

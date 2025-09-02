@@ -8,8 +8,8 @@ import { Pencil } from "lucide-react";
 import Link from "next/link";
 import Paginacao from "../conferencia/paginacao";
 import { EditoraDTO } from "./EditoraDTO";
-import { PaginedList } from "../autor/AutorDTO";
 import Filters from "./filters";
+import { PaginedList } from "@/DTO/PageDTO";
 
 interface searchQuery {
     search: string;
@@ -28,7 +28,7 @@ export default async function EditoraPage({ searchParams }: Props) {
             }
 
 
-            const data = await fetchWrapper<PaginedList<EditoraDTO[]>>('api/produto/editora', {
+            const data = await fetchWrapper<PaginedList<EditoraDTO>>('api/produto/editora', {
                 method: 'POST',
                 cache: 'no-cache',
                 headers: {

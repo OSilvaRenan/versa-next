@@ -1,6 +1,7 @@
 import AutorTable from "@/components/autor-table";
 import { fetchWrapper } from "../../api/fetch";
-import { AutorDTO, PaginedList } from "./AutorDTO";
+import { AutorDTO } from "../../../DTO/AutorDTO";
+import { PaginedList } from "@/DTO/PageDTO";
 
 export interface searchQuery {
   search: string;
@@ -18,7 +19,7 @@ export default async function AutorPage({ searchParams }: Props) {
         nomautor: searchParams.search
       }
 
-      const data = await fetchWrapper<PaginedList<AutorDTO[]>>('api/produto/autor/pesquisa',
+      const data = await fetchWrapper<PaginedList<AutorDTO>>('api/produto/autor/pesquisa',
         {
           method: 'POST',
           headers: {
@@ -29,7 +30,7 @@ export default async function AutorPage({ searchParams }: Props) {
 
       return data.Dados;
     } else {
-      const data = await fetchWrapper<PaginedList<AutorDTO[]>>('api/produto/autor',
+      const data = await fetchWrapper<PaginedList<AutorDTO>>('api/produto/autor',
         {
           method: 'GET',
         });

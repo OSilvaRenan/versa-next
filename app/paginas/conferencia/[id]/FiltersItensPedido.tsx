@@ -1,19 +1,29 @@
 'use client';
+import FilterEmbalagem from '@/app/Combobox/Filters/FilterEmbalagem';
 import { formatarData } from '@/app/functions/functions';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { ConferenciaResponseDTO, separacaoResponse } from '../ConferenciaDTO';
+import { useConferencia } from './ConferenciaContext';
 
 interface Props {
     params: { id: string };
-    conferencia?: ConferenciaResponseDTO;
+    // conferencia?: ConferenciaResponseDTO;
+    // codembalagem: string;
+    // setCodembalagem: (value: string) => void;
+    // setEmbalagem: (value: CboData) => void;
 }
 
-export const FiltersItensPedido = ({ params, conferencia }: Props) => {
+export const FiltersItensPedido = ({ params
+    // , conferencia, codembalagem, setCodembalagem,setEmbalagem
+}: Props) => {
+
+    const {
+        conferencia,
+        codembalagem, setCodembalagem, setEmbalagem,
+    } = useConferencia();
+
     return (
         <div>
             <Card>
@@ -37,29 +47,65 @@ export const FiltersItensPedido = ({ params, conferencia }: Props) => {
                             {conferencia ? (
                                 <div className="flex flex-wrap items-start justify-start">
                                     <div className="flex flex-wrap w-full">
-                                        <div className="flex flex-col p-2 w-full lg:w-1/3">
+                                        <div className="flex flex-col p-2 w-full lg:w-1/4">
                                             <Label className="py-2" htmlFor="tipoperiodo">
                                                 Cliente:
                                             </Label>
                                             <Input
                                                 type="text"
-                                                id="datInicio"
+                                                id="txtNomcliente"
                                                 name="datInicio"
                                                 className="h-8 w-full bg-gray-200"
                                                 value={conferencia.Nomcliente}
                                                 readOnly
                                             />
                                         </div>
-                                        <div className="flex flex-col p-2 w-full lg:w-1/3">
+                                        <div className="flex flex-col p-2 w-full lg:w-1/6">
                                             <Label className="py-2" htmlFor="tipoperiodo">
-                                                Transportadora:
+                                                Data Conferência:
+                                            </Label>
+                                            <Input
+                                                type="text"
+                                                id="datInicio"
+                                                className="h-8 w-full bg-gray-200"
+                                                value={formatarData(conferencia.Datconferencia)}
+                                                readOnly
+                                            />
+                                        </div>
+                                        <div className="flex flex-col p-2 w-full lg:w-1/5">
+                                            <Label className="py-2" htmlFor="tipoperiodo">
+                                                Usuario:
                                             </Label>
                                             <Input
                                                 type="text"
                                                 id="datInicio"
                                                 name="datInicio"
                                                 className="h-8 w-full bg-gray-200"
+                                                value={conferencia.Nomusuario}
+                                                readOnly
+                                            />
+                                        </div>
+                                        <div className="flex flex-col p-2 w-full lg:w-1/3">
+                                            <Label className="py-2" htmlFor="txtTransportadora">
+                                                Transportadora:
+                                            </Label>
+                                            <Input
+                                                id="txtTransportadora"
+                                                className="h-8 w-full bg-gray-200"
                                                 value={conferencia.Nomtransportadora}
+                                                readOnly
+                                            />
+                                        </div>
+                                        <div className="flex flex-col p-2 w-full lg:w-1/3">
+                                            <Label className="py-2" htmlFor="tipoperiodo">
+                                                Operação:
+                                            </Label>
+                                            <Input
+                                                type="text"
+                                                id="datInicio"
+                                                name="datInicio"
+                                                className="h-8 w-full bg-gray-200"
+                                                value={conferencia.Nomoperacao}
                                                 readOnly
                                             />
                                         </div>
@@ -76,30 +122,9 @@ export const FiltersItensPedido = ({ params, conferencia }: Props) => {
                                                 readOnly
                                             />
                                         </div>
-                                        <div className="flex flex-col p-2 w-full lg:w-1/3">
-                                            <Label className="py-2" htmlFor="tipoperiodo">
-                                                Data Conferência:
-                                            </Label>
-                                            <Input
-                                                id="datInicio"
-                                                name="datInicio"
-                                                className="h-8 w-full bg-gray-200"
-                                                value={formatarData(conferencia.Datconferencia)}
-                                                readOnly
-                                            />
-                                        </div>
-                                        <div className="flex flex-col p-2 w-full lg:w-1/3">
-                                            <Label className="py-2" htmlFor="tipoperiodo">
-                                                Operação:
-                                            </Label>
-                                            <Input
-                                                type="text"
-                                                id="datInicio"
-                                                name="datInicio"
-                                                className="h-8 w-full bg-gray-200"
-                                                value={conferencia.Nomoperacao}
-                                                readOnly
-                                            />
+                                        <div className='flex flex-col'>
+                                            <FilterEmbalagem classNameCombo="lg:w-[170px] w-[160px] h-8" classNameLista="lg:w-[250px] p-0 w-screen" value={codembalagem == "" ? -1 : parseInt(codembalagem)}
+                                                onSelect={setCodembalagem} codconferencia={conferencia.Codconferencia} setEmbalagem={setEmbalagem} />
                                         </div>
                                     </div>
                                 </div>

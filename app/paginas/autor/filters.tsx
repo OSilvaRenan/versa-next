@@ -1,8 +1,4 @@
 "use client"
-import FilterCliente from '@/app/Combobox/Filters/FilterCliente';
-import FilterOperacao from '@/app/Combobox/Filters/FilterOperacao';
-import FilterSituacao from '@/app/Combobox/Filters/FilterSituacao';
-import FilterTipoPeriodo from '@/app/Combobox/Filters/FilterTipoPeriodo';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -18,7 +14,7 @@ const Filters = () => {
 
     function Pesquisa() {
 
-        const params = new URLSearchParams(useSearchParams()!!);
+        const params = new URLSearchParams(useSearchParams()!);
 
         if (search) params.set('search', search);
         const query = params.size ? params.toString() : '';

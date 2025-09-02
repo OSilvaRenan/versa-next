@@ -12,8 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Page } from "../conferencia/ConferenciaDTO"
-import { AutorDTO } from "./AutorDTO"
+import { AutorDTO } from "../../../DTO/AutorDTO"
 
 
 

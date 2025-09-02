@@ -1,4 +1,4 @@
-import { Page } from "@/app/paginas/conferencia/ConferenciaDTO";
+import { Page } from "@/DTO/PageDTO";
 import { Pagination, PaginationContent, PaginationItem, PaginationLast, PaginationNext, PaginationPrevious, PaginationStart } from "./ui/pagination";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
@@ -11,8 +11,8 @@ interface PaginacaoProps {
 
 
 const Paginacao: React.FC<PaginacaoProps> = ({ dadosPage, onPageChange }) => {
-  const searchParams = useSearchParams()!;
-  const router = useRouter();
+  const searchParams = useSearchParams();
+    const router = useRouter();
   const params = new URLSearchParams(searchParams);
 
   function EnviaDadosPaginacao(index: number) {

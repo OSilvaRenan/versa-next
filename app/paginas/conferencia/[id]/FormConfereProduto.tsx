@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
-import { AtualizarQtdSeparada } from "@/dbs/SeparacaoDb";
 import { separacaoResponse } from "@/DTO/SeparacaoDTO";
 import { cn } from "@/lib/utils";
 import axios from "axios";
@@ -18,7 +17,7 @@ interface PropsForm {
     setQtdSeparada: (value: number) => void;
 }
 
-export function  FormQtd({ item, className, permiteCampos, setPermiteCampos, ProximoItem, qtdSeparada, setQtdSeparada }: PropsForm) {
+export function FormQtd({ item, className, permiteCampos, setPermiteCampos, ProximoItem, qtdSeparada, setQtdSeparada }: PropsForm) {
     const { toast } = useToast();
     const [localizacao, setLocalizacao] = useState('');
     const [isbn, setIsbn] = useState('');
@@ -65,15 +64,14 @@ export function  FormQtd({ item, className, permiteCampos, setPermiteCampos, Pro
                     let qtdSeparar = qtdLote == 0 ? qtdSeparada + 1 : qtdSeparada + qtdLote;
 
                     if (qtdSeparar <= item.Quantidade) {
-                        // try {
+                        try {
                             const request = {
                                 Codconferencia: item.Codconferencia,
                                 localizacao: localizacao ? localizacao : item.Localizacao,
                                 Isbn: isbn,
                                 QtdSeparada: qtdSeparar
                             };
-                            // await axios.post(`${process.env.NEXT_PUBLIC_API_URL}api/conferencia/atualizaqtdseparada`, request).then(response => {
-                                AtualizarQtdSeparada(request);
+                            await axios.post(`${process.env.NEXT_PUBLIC_API_URL}api/conferencia/atualizaqtdseparada`, request).then(response => {
                                 setIsbn('');
                                 SelecionaCampo();
                                 setQtdSeparada(qtdSeparar);
@@ -83,13 +81,13 @@ export function  FormQtd({ item, className, permiteCampos, setPermiteCampos, Pro
                                 if (qtdSeparar == item.Quantidade) {
                                     ProximoItem();
                                 }
-                            // });
-                        // } catch (error) {
-                        //     toast({
-                        //         variant: "default",
-                        //         description: "Erro ao atualizar a quantidade separada: " + error,
-                        //     })
-                        // }
+                            });
+                        } catch (error) {
+                            toast({
+                                variant: "default",
+                                description: "Erro ao atualizar a quantidade separada: " + error,
+                            })
+                        }
                     } else {
                         toast({
                             variant: "destructive",

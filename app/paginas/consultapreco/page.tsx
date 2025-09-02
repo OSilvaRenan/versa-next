@@ -10,7 +10,7 @@ import { Camera, CameraOff, Package, Search } from 'lucide-react';
 import { formatarDinheiro } from '@/app/functions/functions';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Paginacao from '../conferencia/paginacao';
-import { Page } from '../conferencia/ConferenciaDTO';
+import { Page } from '@/DTO/PageDTO';
 
 interface Produtos {
   Codproduto: number;
